@@ -26,6 +26,7 @@ class DDSScore(Resource):
         raise NotImplementedError()
 
     def dds_scores(dds, state, target, solutions, mode=1):
+        """Gives the dds score for the given contract, may be mid-hand"""
         n = len(state['plays']) % 4
         first = state['plays'][-n][0] if n > 0 else state['turn']
         trick = [c for _, c in state['plays'][-n:]] if n > 0 else []
