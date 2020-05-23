@@ -8,16 +8,14 @@ RUN apt-get install -y \
 
 RUN mkdir -p /app
 
-RUN git clone https://github.com/dds-bridge/dds /app && \
+RUN git clone https://github.com/df7cb/dds /app && \
   cd /app && \
-  git checkout v2.9.0
+  git checkout linux-memory
 
 WORKDIR /app/src
 
 RUN cp ./Makefiles/Makefile_linux_shared ./Makefile
 RUN make clean && make
-
-RUN ls -la
 
 FROM python:3.7-stretch
 
