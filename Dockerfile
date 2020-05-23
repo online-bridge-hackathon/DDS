@@ -35,5 +35,5 @@ RUN pip install -r requirements.txt
 COPY /src/ /app/
 
 ENV FLASK_APP "api.py"
-CMD ["python", "-m", "flask", "run"]
+
 

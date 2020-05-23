@@ -1,4 +1,4 @@
 image: gcr.io/online-bridge-hackathon-2020/dds-api:0.0.0-dev
 replicas: 1
-externalHostname: dds.hackathon.papalima.com
+externalHostname: dds.hackathon.globalbridge.app
 tlsSecret: dds-api-tls-secret
