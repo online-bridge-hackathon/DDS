@@ -65,7 +65,7 @@ class DDSError(Exception):
         self.code = code
 
     def __str__(self):
-        return f"Error code {self.code}"
+        return "Error code {self.code}"
 
 def encode_deal(hands):
     cards = ((c_int * 4) * 4)()
