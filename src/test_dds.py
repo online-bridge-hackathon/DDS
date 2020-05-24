@@ -5,15 +5,13 @@
 #   https://opensource.org/licenses/MIT
 
 # To run the tests from the command line:
-# cd src
-# python test_dds.py
-#   or
+# cd DDS
 # python -m unittest discover
 
 import json
 import unittest
 
-from dds import DDS
+from src.dds import DDS
 
 class TestDDS(unittest.TestCase):
 
