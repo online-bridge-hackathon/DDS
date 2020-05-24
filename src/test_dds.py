@@ -17,7 +17,7 @@ class TestDDS(unittest.TestCase):
 
     def test_dds_scores(self):
         """
-        Manually tests DDS output for the following hand:
+        Manually tests DDS output for the following deal:
             S AQ85
             H AK976
             D 5
