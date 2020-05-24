@@ -11,11 +11,30 @@ class DDSTable(Resource):
     def get(self):
         return {'hello': 'world'}
 
+    def report_input_error(self, error_str):
+        #Format error string as a document, for now a plaintext stup
+        return error_str, 400
+
+    def verify_input(self, data):
+        if data is None:
+            return self.report_input_error("No input or input not JSON (Also possibly wrong conent-type)")
+
+        if type(data) != dict:
+            return self.report_input_error("Expected a dictionary")
+
+        if 'hands' not in data:
+            return self.report_input_error("Expected board description to have hands in it")
+
+        directions=""
+
     def post(self):
         """Takes in a single hand and returns a DDS table"""
         data = request.get_json()
         # Verify the data here
-        # self.verifyinput(data)
+        error = self.verify_input(data)
+        if error is not None:
+            return error
+
         dds = DDS(max_threads=2)
         dds_table = dds.calc_dd_table(data['hands'])
         return dds_table
