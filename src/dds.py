@@ -82,7 +82,11 @@ class DDS:
         if platform.system() == "Windows":
             libname = "dds.dll"
         else:
-            libname = "libdds.so"
+            # Look in the same folder as dds.py itself.
+            # This is required for our unit tests.
+            import pathlib
+            path = pathlib.Path(__file__).parent.absolute()
+            libname = f"{path}/libdds.so"
         self.libdds = libloader.LoadLibrary(libname)
         self.libdds.SetMaxThreads(max_threads)
 
