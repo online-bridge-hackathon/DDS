@@ -1,5 +1,5 @@
 DOCKER_REPO ?= gcr.io/online-bridge-hackathon-2020
-VERSION ?= $(cat VERSION)
+VERSION ?= $(shell cat VERSION)
 DOCKER_TAG=${DOCKER_REPO}/dds-api:${VERSION}
 
 EXTERNAL_ADDRES ?= dds.hackathon.globalbridge.app
