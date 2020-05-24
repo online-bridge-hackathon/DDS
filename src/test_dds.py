@@ -18,6 +18,7 @@ class TestDDS(unittest.TestCase):
     def test_dds_scores(self):
         """
         Manually tests DDS output for the following deal:
+
             S AQ85
             H AK976
             D 5
@@ -40,6 +41,7 @@ class TestDDS(unittest.TestCase):
                 Test for invalid input, e.g. too many cards, too few, duplicated card
                 Tweak input by exchanging an A and a K, make sure output changes to match.
         """
+
         deal_string = """
             {"hands":
                 {"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],
