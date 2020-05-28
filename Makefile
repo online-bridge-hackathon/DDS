@@ -32,3 +32,6 @@ set_gcp_context:
 
 ensure_ns:
 	kubectl create ns ${DDS_K8S_NS} || :
+
+run_local_tests:
+	python3 -m unittest discover
