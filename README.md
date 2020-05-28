@@ -11,6 +11,10 @@ cd dds/src
 make -f Makefiles/Makefile_Mac_clang_shared THREADING=
 ln libdds.so /usr/local/lib
 
+# Install Docker for MacOS
+
+https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3 
+
 ### Build & Deploy DDS api ###
 
 Prerequirements:
