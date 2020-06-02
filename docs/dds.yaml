@@ -1,4 +1,7 @@
 openapi: 3.0.2
+externalDocs:
+  description: Full spec
+  url: https://online-bridge-hackathon.github.io/DDS/dds.yaml
 info:
   description: Double Dummy Solver 
   title: DDS
@@ -210,17 +213,21 @@ paths:
                       type: array
                       items:
                         type: string
+                        pattern: (S|H|D|C)(\d{1,2})
                     S:
                       type: array
                       items:
                         type: string
+                        pattern: (S|H|D|C)(\d{1,2})
                     E:
                       type: array
                       items:
                         type: string
+                        pattern: (S|H|D|C)(\d{1,2})
                     W:
                       type: array
                       items:
                         type: string
+                        pattern: (S|H|D|C)(\d{1,2})
       tags: 
         - DDS
