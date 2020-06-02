@@ -3,7 +3,10 @@ externalDocs:
   description: Full spec
   url: https://online-bridge-hackathon.github.io/DDS/dds.yaml
 info:
-  description: Double Dummy Solver 
+  description: 
+    An api which returns DDS results for a given board.
+    Uses the Bo Hagland solver https://github.com/dds-bridge/dds
+    Credit to Alexis Rimbaud of NukkAI for the python dds wrapper.
   title: DDS
   version: 0.0.1
   termsOfService: http://example.com/terms/
@@ -18,7 +21,7 @@ servers:
     url: https://dds.hackathon.globalbridge.app/
 tags:
   - name: DDS
-    description: DDS operations
+    description: DDS Api
 components:
   responses:
     Default:
@@ -73,61 +76,122 @@ components:
       description: 'DD analyses'
       properties:
         S:
-          type: object
-          properties:
-            N:
-              type: integer
-            S:
-              type: integer
-            E:
-              type: integer
-            W:
-              type: integer
+          $ref: "#/components/schemas/SuitSolved"
         H:
-          type: object
-          properties:
-            N:
-              type: integer
-            S:
-              type: integer
-            E:
-              type: integer
-            W:
-              type: integer
+          $ref: "#/components/schemas/SuitSolved"
         D: 
-          type: object
-          properties:
-            N:
-              type: integer
-            S:
-              type: integer
-            E:
-              type: integer
-            W:
-              type: integer
+          $ref: "#/components/schemas/SuitSolved"
         C: 
-          type: object
-          properties:
-            N:
-              type: integer
-            S:
-              type: integer
-            E:
-              type: integer
-            W:
-              type: integer
+          $ref: "#/components/schemas/SuitSolved"
         N: 
-          type: object
-          properties:
-            N:
-              type: integer
-            S:
-              type: integer
-            E:
-              type: integer
-            W:
-              type: integer
+          $ref: "#/components/schemas/SuitSolved"
       type: object
+    Hand:
+      description: 'Player Hand'
+      type: array
+      items:
+        type: string
+        pattern: (S|H|D|C)(2|3|4|5|6|7|8|9|T|J|Q|K|A)
+    SuitSolved:
+      description: 'Suit Solved by DD analyses'
+      type: object
+      properties:
+        N:
+          type: integer
+          minimum: 0
+          maximum: 13
+          description: North
+        S:
+          type: integer
+          minimum: 0
+          maximum: 13
+          description: South
+        E:
+          type: integer
+          minimum: 0
+          maximum: 13
+          description: East
+        W:
+          type: integer
+          minimum: 0
+          maximum: 13
+          description: West
+  requestBodies:
+    HandPost:
+      content:
+        application/json:
+          example: 
+            hands:
+              S:
+              - D3
+              - C6
+              - DT
+              - D8
+              - DJ
+              - D6
+              - CA
+              - C3
+              - S2
+              - C2
+              - C4
+              - S9
+              - S7
+              W:
+              - DA
+              - S4
+              - HT
+              - C5
+              - D4
+              - D7
+              - S6
+              - S3
+              - DK
+              - CT
+              - D2
+              - SK
+              - H8
+              N:
+              - C7
+              - H6
+              - H7
+              - H9
+              - CJ
+              - SA
+              - S8
+              - SQ
+              - D5
+              - S5
+              - HK
+              - C8
+              - HA
+              E:
+              - H2
+              - H5
+              - CQ
+              - D9
+              - H4
+              - ST
+              - HQ
+              - SJ
+              - HJ
+              - DQ
+              - H3
+              - C9
+              - CK
+          schema:
+            type: object
+            properties:
+              hands:
+                type: object
+                properties:
+                  N:
+                    $ref: "#/components/schemas/Hand"
+                  S:
+                    $ref: "#/components/schemas/Hand"
+                  E:
+                    $ref: "#/components/schemas/Hand"
+                  W:
+                    $ref: "#/components/schemas/Hand"
 paths:
   /api/dds-table:
     post:
@@ -141,93 +205,8 @@ paths:
           "$ref": "#/components/responses/Default"
         default:
           "$ref": "#/components/responses/Default"
-      summary: Returns double dummy analyses for the posted hand
+      summary: Returns double dummy analyses for the hand
       requestBody:
-        content:
-          application/json:
-            example:
-              hands:
-                S:
-                - D3
-                - C6
-                - DT
-                - D8
-                - DJ
-                - D6
-                - CA
-                - C3
-                - S2
-                - C2
-                - C4
-                - S9
-                - S7
-                W:
-                - DA
-                - S4
-                - HT
-                - C5
-                - D4
-                - D7
-                - S6
-                - S3
-                - DK
-                - CT
-                - D2
-                - SK
-                - H8
-                N:
-                - C7
-                - H6
-                - H7
-                - H9
-                - CJ
-                - SA
-                - S8
-                - SQ
-                - D5
-                - S5
-                - HK
-                - C8
-                - HA
-                E:
-                - H2
-                - H5
-                - CQ
-                - D9
-                - H4
-                - ST
-                - HQ
-                - SJ
-                - HJ
-                - DQ
-                - H3
-                - C9
-                - CK
-            schema:
-              type: object
-              properties:
-                hands:
-                  type: object
-                  properties:
-                    N:
-                      type: array
-                      items:
-                        type: string
-                        pattern: (S|H|D|C)(\d{1,2})
-                    S:
-                      type: array
-                      items:
-                        type: string
-                        pattern: (S|H|D|C)(\d{1,2})
-                    E:
-                      type: array
-                      items:
-                        type: string
-                        pattern: (S|H|D|C)(\d{1,2})
-                    W:
-                      type: array
-                      items:
-                        type: string
-                        pattern: (S|H|D|C)(\d{1,2})
+        $ref: "#/components/requestBodies/HandPost"
       tags: 
         - DDS
