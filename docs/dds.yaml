@@ -1,0 +1,226 @@
+openapi: 3.0.2
+info:
+  description: Double Dummy Solver 
+  title: DDS
+  version: 0.0.1
+  termsOfService: http://example.com/terms/
+  contact:
+    name: API Support
+    email: support@example.com
+    url: http://example.com/support
+  license:
+    name: Apache License Version 2.0, January 2004, http://www.apache.org/licenses/
+servers:
+  - description: dev
+    url: https://dds.hackathon.globalbridge.app/
+tags:
+  - name: DDS
+    description: DDS operations
+components:
+  responses:
+    Default:
+      description: Unexpected Error
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Error"
+    Success:
+      description: Success
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Success"
+    Solved:
+      description: Solved Response Schema
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/Solved"
+  schemas:
+    Error:
+      description: Default Error Response Container
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Success:
+      description: Success
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Solved:
+      description: 'DD analyses'
+      properties:
+        S:
+          type: object
+          properties:
+            N:
+              type: integer
+            S:
+              type: integer
+            E:
+              type: integer
+            W:
+              type: integer
+        H:
+          type: object
+          properties:
+            N:
+              type: integer
+            S:
+              type: integer
+            E:
+              type: integer
+            W:
+              type: integer
+        D: 
+          type: object
+          properties:
+            N:
+              type: integer
+            S:
+              type: integer
+            E:
+              type: integer
+            W:
+              type: integer
+        C: 
+          type: object
+          properties:
+            N:
+              type: integer
+            S:
+              type: integer
+            E:
+              type: integer
+            W:
+              type: integer
+        N: 
+          type: object
+          properties:
+            N:
+              type: integer
+            S:
+              type: integer
+            E:
+              type: integer
+            W:
+              type: integer
+      type: object
+paths:
+  /api/dds-table:
+    post:
+      operationId: postDdsTable
+      responses:
+        '200':
+           "$ref": "#/components/responses/Solved"
+        '400':
+          "$ref": "#/components/responses/NotFound"
+        '500':
+          "$ref": "#/components/responses/Default"
+        default:
+          "$ref": "#/components/responses/Default"
+      summary: Returns double dummy analyses for the posted hand
+      requestBody:
+        content:
+          application/json:
+            example:
+              hands:
+                S:
+                - D3
+                - C6
+                - DT
+                - D8
+                - DJ
+                - D6
+                - CA
+                - C3
+                - S2
+                - C2
+                - C4
+                - S9
+                - S7
+                W:
+                - DA
+                - S4
+                - HT
+                - C5
+                - D4
+                - D7
+                - S6
+                - S3
+                - DK
+                - CT
+                - D2
+                - SK
+                - H8
+                N:
+                - C7
+                - H6
+                - H7
+                - H9
+                - CJ
+                - SA
+                - S8
+                - SQ
+                - D5
+                - S5
+                - HK
+                - C8
+                - HA
+                E:
+                - H2
+                - H5
+                - CQ
+                - D9
+                - H4
+                - ST
+                - HQ
+                - SJ
+                - HJ
+                - DQ
+                - H3
+                - C9
+                - CK
+            schema:
+              type: object
+              properties:
+                hands:
+                  type: object
+                  properties:
+                    N:
+                      type: array
+                      items:
+                        type: string
+                    S:
+                      type: array
+                      items:
+                        type: string
+                    E:
+                      type: array
+                      items:
+                        type: string
+                    W:
+                      type: array
+                      items:
+                        type: string
+      tags: 
+        - DDS
