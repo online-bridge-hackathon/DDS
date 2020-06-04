@@ -1,12 +1,10 @@
 openapi: 3.0.2
-externalDocs:
-  description: Full spec
-  url: https://online-bridge-hackathon.github.io/DDS/dds.yaml
 info:
   description: 
     An api which returns DDS results for a given board.
     Uses the Bo Hagland solver https://github.com/dds-bridge/dds
     Credit to Alexis Rimbaud of NukkAI for the python dds wrapper.
+    Copyright 2020 Adam Wildavsky and the Bridge Hackathon contributors
   title: DDS
   version: 0.0.1
   termsOfService: http://example.com/terms/
@@ -15,7 +13,11 @@ info:
     email: support@example.com
     url: http://example.com/support
   license:
-    name: Apache License Version 2.0, January 2004, http://www.apache.org/licenses/
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+externalDocs:
+  description: Full spec
+  url: https://online-bridge-hackathon.github.io/DDS/dds.yaml
 servers:
   - description: dev
     url: https://dds.hackathon.globalbridge.app/
