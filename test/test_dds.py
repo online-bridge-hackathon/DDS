@@ -6,7 +6,7 @@
 
 # To run the tests from the command line:
 # cd DDS
-# python -m unittest discover
+# python3 -m unittest discover
 
 import json
 import unittest
