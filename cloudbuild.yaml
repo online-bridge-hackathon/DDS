@@ -1,0 +1,46 @@
+steps:
+  # Build my-app image
+  - name: gcr.io/cloud_builders/docker
+    args:
+      - build
+      - -t
+      - gcr.io/online-bridge-hackathon-2020/dds-api:$COMMIT_SHA
+      - .
+
+  # Push my-app image to Google Cloud Registry
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - gcr.io/online-bridge-hackathon-2020/dds-api:$COMMIT_SHA
+
+  # Configure a kubectl workspace for this project
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - cluster-info
+    env:
+      - CLOUDSDK_COMPUTE_REGION=$_CUSTOM_REGION
+      - CLOUDSDK_CONTAINER_CLUSTER=$_CUSTOM_CLUSTER
+      - KUBECONFIG=/workspace/.kube/config
+    
+  # Deploy with Helm
+  - name: gcr.io/online-bridge-hackathon-2020/dds-api/helm
+    args:
+      - upgrade
+      - -i
+      - dds-api
+      - ./chart
+      - --set
+      - image="gcr.io/online-bridge-hackathon-2020/dds-api:$COMMIT_SHA"
+      - --set
+      - externalHostname="dds.hackathon.globalbridge.app"
+      - namespace
+      - dds-api
+      - --history-max=10
+    env:
+      - KUBECONFIG=/workspace/.kube/config
+      - TILLERLESS=false
+      - TILLER_NAMESPACE=kube-system
+timeout: 1200s
+substitutions:
+  _CUSTOM_REGION: europe-west3-b
+  _CUSTOM_CLUSTER: hackathon-cluster
