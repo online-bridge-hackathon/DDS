@@ -15,6 +15,7 @@ ln libdds.so /usr/local/lib
 
 pip3 install Flask
 pip install flask-restful
+pip install flask_cors
 cd src
 python api.py
 # In a separate terminal window…
