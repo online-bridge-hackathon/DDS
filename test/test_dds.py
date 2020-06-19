@@ -33,8 +33,7 @@ class TestDDS(unittest.TestCase):
             D JT863
             C A6432
 
-        TODO:   Move this file to a 'test' directory
-                Check the entire returned JSON object.
+        TODO:   Check the entire returned JSON object.
                 Add more test deals.
                 Test for different values of max_threads.
                 Test for invalid input, e.g. too many cards, too few, duplicated card
