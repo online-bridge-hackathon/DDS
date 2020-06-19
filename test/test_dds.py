@@ -49,7 +49,7 @@ class TestDDS(unittest.TestCase):
                 }
                }
 
-        dds = DDS(max_threads=2)
+        dds = DDS()
         dds_table = dds.calc_dd_table(deal['hands'])
 
         self.assertEqual(8, dds_table['C']['S'], 'South can take 8 tricks with clubs as trump')
