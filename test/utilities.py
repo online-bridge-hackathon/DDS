@@ -12,7 +12,7 @@ SUIT_SYMBOLS = ["S", "H", "D", "C"]
 
 def string_to_hand(hand_string):
     # Input string example: "AQ85.AK976.5.J87"
-    
+
     # Output dict: ['SA', 'SQ', 'S8', 'S5', 'HA', 'HK', 'H9', 'H7', 'H6', 'D5', 'CJ', 'C8', 'C7']
 
     suits = hand_string.split('.')

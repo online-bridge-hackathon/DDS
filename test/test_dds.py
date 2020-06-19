@@ -10,8 +10,8 @@
 
 import unittest
 
-from src.dds import DDS
 from test.utilities import nesw_to_dds_format
+from src.dds import DDS
 
 class TestDDS(unittest.TestCase):
 
