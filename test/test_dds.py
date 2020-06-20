@@ -17,19 +17,22 @@ from src.dds import DDS
 # pylint: disable=pointless-string-statement
 
 class TestDDS(unittest.TestCase):
+    """
+    Tests DDS output for a few specific deals.
 
-    def test_dds_scores(self):
-        """
-        Tests DDS output for a few specific deals.
+    TODO:   Test for different values of max_threads.
+            Test for invalid input, e.g. too many cards, too few, duplicated card.
+            Tweak input by exchanging an A and a K, make sure output changes to match.
+            Rotate the grand slam deal so that EW can take all the tricks.
+    """
 
-        TODO:   Test for different values of max_threads.
-                Test for invalid input, e.g. too many cards, too few, duplicated card.
-                Tweak input by exchanging an A and a K, make sure output changes to match.
-                Rotate the grand slam deal so that EW can take all the tricks.
-        """
+    @classmethod
+    def setUpClass(cls):
+        # Cannot use setUp() because we are only able to instantiate DDS once.
+        # This is likely a bug in DDS…
+        cls.dds = DDS()
 
-        dds = DDS()
-
+    def test_one_sample_deal(self):
         """
             S AQ85
             H AK976
@@ -56,11 +59,12 @@ class TestDDS(unittest.TestCase):
 
         hands = nesw_to_dds_format(nesw)
 
-        dds_table = dds.calc_dd_table(hands)
+        dds_table = self.dds.calc_dd_table(hands)
 
         self.assertEqual(8, dds_table['C']['S'], 'South can take 8 tricks with clubs as trump')
         self.assertEqual(6, dds_table['N']['E'], 'East can take 6 tricks at notrump')
 
+    def test_ns_make_7_of_everything(self):
         """
             S AKQJ
             H AKQJ
@@ -87,7 +91,7 @@ class TestDDS(unittest.TestCase):
 
         hands = nesw_to_dds_format(nesw)
 
-        dds_table = dds.calc_dd_table(hands)
+        dds_table = self.dds.calc_dd_table(hands)
 
         for denomination in ['C', 'D', 'H', 'S', 'N']:
             for declarer in ['N', 'S']:
@@ -97,8 +101,9 @@ class TestDDS(unittest.TestCase):
                 self.assertEqual(0, dds_table[denomination][declarer],
                                  "EW can take 0 tricks in any denomination.")
 
+    def test_everyone_makes_3n(self):
         """
-        Unusual deal! Everyone makes 3N.
+        Unusual deal!
         See: https://bridge.thomasoandrews.com/deals/everybody/
 
             S QT9
@@ -126,7 +131,7 @@ class TestDDS(unittest.TestCase):
 
         hands = nesw_to_dds_format(nesw)
 
-        dds_table = dds.calc_dd_table(hands)
+        dds_table = self.dds.calc_dd_table(hands)
 
         for declarer in ['N', 'E', 'S', 'W']:
             self.assertEqual(9, dds_table['N'][declarer],
