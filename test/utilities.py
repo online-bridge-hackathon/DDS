@@ -56,3 +56,9 @@ def nesw_to_dds_format(nesw):
         "S": string_to_hand(nesw[2]),
         "W": string_to_hand(nesw[3])
     }
+
+def rotate_nesw_to_eswn(nesw):
+    eswn = []
+    for index in range(4):
+        eswn.append(nesw[(index + 1) %4])
+    return eswn
