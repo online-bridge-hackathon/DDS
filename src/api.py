@@ -10,6 +10,8 @@ api = Api(app)
 
 
 class DDSTable(Resource):
+    dds = DDS(max_threads=2)    
+
     def get(self):
         return {'hello': 'world'}
 
@@ -18,8 +20,7 @@ class DDSTable(Resource):
         data = request.get_json()
         # Verify the data here
         # self.verifyinput(data)
-        dds = DDS(max_threads=2)
-        dds_table = dds.calc_dd_table(data['hands'])
+        dds_table = self.dds.calc_dd_table(data['hands'])
         return dds_table
 
 class DDSScore(Resource):
