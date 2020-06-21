@@ -4,17 +4,18 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
+const DIRECTIONS = ['north', 'east', 'south', 'west'];
+const SUITS = ['clubs', 'diamonds', 'hearts', 'spades']
+
 function collectHands() {
     // Build the structure from the form fields
-    var directions = ['north', 'east', 'south', 'west'];
-    var suits = ['clubs', 'diamonds', 'hearts', 'spades']
     var hands = {};
     
-    for (direction of directions) {
+    for (direction of DIRECTIONS) {
         direction_letter = direction.charAt(0).toUpperCase()        
         hands[direction_letter] = []
 
-        for (suit of suits) {
+        for (suit of SUITS) {
             suit_letter = suit.charAt(0).toUpperCase()
             index = direction + " " + suit
             holding = document.getElementById(index).value
