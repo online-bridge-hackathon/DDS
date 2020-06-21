@@ -1,0 +1,14 @@
+{
+  "projectName": "DDS",
+  "projectOwner": "Brewing1",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "atom",
+  "contributors": [],
+  "contributorsPerLine": 7
+}
