@@ -8,14 +8,7 @@ const DIRECTIONS = ['north', 'east', 'south', 'west'];
 const SUITS = ['spades', 'hearts', 'diamonds', 'clubs']
 
 
-function fillFormWithTestData() {
-    const nesw = [
-        "AKQJ.AKQJ.T98.T9",
-        "5432.5432.32.432",
-        "T98.T9.AKQJ.AKQJ",
-        "76.876.7654.8765"
-    ]
-    
+function fillFormWithTestData(nesw) {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         hand = nesw[direction_index];
         direction = DIRECTIONS[direction_index];
@@ -34,13 +27,21 @@ function fillFormWithTestData() {
     }
 }
 
+function fillFormWithGrandSlamTestData() {
+    fillFormWithTestData([
+        "AKQJ.AKQJ.T98.T9",
+        "5432.5432.32.432",
+        "T98.T9.AKQJ.AKQJ",
+        "76.876.7654.8765"
+    ])
+}
+
 function clearTestData() {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         direction = DIRECTIONS[direction_index];
                 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
-            holding = holdings[suit_index];
             index = direction + " " + suit
             element = document.getElementById(index)
             element.value = "";
