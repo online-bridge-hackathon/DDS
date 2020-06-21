@@ -9,17 +9,17 @@ const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 
 
 function fillFormWithTestData(nesw) {
-    for (direction_index = 0; direction_index < 4; direction_index++ ) {
-        hand = nesw[direction_index];
-        direction = DIRECTIONS[direction_index];
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
+        var hand = nesw[direction_index];
+        var direction = DIRECTIONS[direction_index];
 
         holdings = hand.split(".");
 
-        for (suit_index = 0; suit_index < 4; suit_index++) {
-            suit = SUITS[suit_index];
-            holding = holdings[suit_index];
-            element_index = direction + "_" + suit;
-            element = document.getElementById(element_index);
+        for (var suit_index = 0; suit_index < 4; suit_index++) {
+            var suit = SUITS[suit_index];
+            var holding = holdings[suit_index];
+            var element_index = direction + "_" + suit;
+            var element = document.getElementById(element_index);
             element.value = holding;
         }
     }
@@ -53,62 +53,61 @@ function fillFormWithPartScoreTestData() {
 }
 
 function clearTestData() {
-    for (direction_index = 0; direction_index < 4; direction_index++ ) {
-        direction = DIRECTIONS[direction_index];
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
+        var direction = DIRECTIONS[direction_index];
 
-        for (suit_index = 0; suit_index < 4; suit_index++) {
-            suit = SUITS[suit_index];
-            element_index = direction + "_" + suit;
-            element = document.getElementById(element_index);
+        for (var suit_index = 0; suit_index < 4; suit_index++) {
+            var suit = SUITS[suit_index];
+            var element_index = direction + "_" + suit;
+            var element = document.getElementById(element_index);
             element.value = "";
         }
     }
 }
 
 function rotateClockwise() {
-    old_hands = [];
+    var old_hands = [];
 
-    for (direction_index = 0; direction_index < 4; direction_index++ ) {
-        old_direction = DIRECTIONS[direction_index];
-        new_direction = DIRECTIONS[(direction_index + 1) % 4];
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
+        var old_direction = DIRECTIONS[direction_index];
+        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
 
         old_hands.push([]);
 
-        for (suit_index = 0; suit_index < 4; suit_index++) {
-            suit = SUITS[suit_index];
-            element_index = old_direction + "_" + suit;
-            old_element = document.getElementById(element_index);
-            old_value = old_element.value;
+        for (var suit_index = 0; suit_index < 4; suit_index++) {
+            var suit = SUITS[suit_index];
+            var element_index = old_direction + "_" + suit;
+            var old_element = document.getElementById(element_index);
+            var old_value = old_element.value;
             old_hands[direction_index].push(old_value);
         }
     }
 
-    for (direction_index = 0; direction_index < 4; direction_index++ ) {
-        new_direction = DIRECTIONS[(direction_index + 1) % 4];
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
+        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
 
-        for (suit_index = 0; suit_index < 4; suit_index++) {
-            suit = SUITS[suit_index];
-            element_index = new_direction + "_" + suit;
-            new_element = document.getElementById(element_index);
+        for (var suit_index = 0; suit_index < 4; suit_index++) {
+            var suit = SUITS[suit_index];
+            var element_index = new_direction + "_" + suit;
+            var new_element = document.getElementById(element_index);
             new_element.value = old_hands[direction_index][suit_index];
         }
     }
 }
 
 function collectHands() {
-    // Build the structure from the form fields
     var hands = {};
 
-    for (direction of DIRECTIONS) {
-        direction_letter = direction.charAt(0).toUpperCase();
+    for (var direction of DIRECTIONS) {
+        var direction_letter = direction.charAt(0).toUpperCase();
         hands[direction_letter] = [];
 
-        for (suit of SUITS) {
-            suit_letter = suit.charAt(0).toUpperCase();
-            element_index = direction + "_" + suit;
-            holding = document.getElementById(element_index).value;
+        for (var suit of SUITS) {
+            var suit_letter = suit.charAt(0).toUpperCase();
+            var element_index = direction + "_" + suit;
+            var holding = document.getElementById(element_index).value;
 
-            for (card of holding) {
+            for (var card of holding) {
                 hands[direction_letter].push(suit_letter + card.toUpperCase());
             }
        }
@@ -118,10 +117,10 @@ function collectHands() {
 }
 
 function sendJSON(){
-    xhr = new XMLHttpRequest();
-    url = "http://localhost:5000/api/dds-table/";
+    var xhr = new XMLHttpRequest();
+    const URL = "http://localhost:5000/api/dds-table/";
 
-    xhr.open("POST", url, true);
+    xhr.open("POST", URL, true);
 
     xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -132,8 +131,8 @@ function sendJSON(){
         }
     };
 
-    hands = collectHands();
-    deal = { "hands": hands }
+    var hands = collectHands();
+    var deal = { "hands": hands };
     var data = JSON.stringify(deal);
     xhr.send(data);
 }
