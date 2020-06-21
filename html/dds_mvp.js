@@ -36,6 +36,15 @@ function fillFormWithGrandSlamTestData() {
     ])
 }
 
+function fillFormWithEveryoneMakes3nTestData() {
+    fillFormWithTestData([
+        "QT9.A8765432.KJ.",
+        "KJ..A8765432.QT9",
+        "A8765432.QT9..KJ",
+        ".KJ.QT9.A8765432"
+    ])
+}
+
 function clearTestData() {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         direction = DIRECTIONS[direction_index];
