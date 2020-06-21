@@ -12,14 +12,14 @@ function fillFormWithTestData(nesw) {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         hand = nesw[direction_index];
         direction = DIRECTIONS[direction_index];
-        
+
         holdings = hand.split('.')
-        
+
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
             holding = holdings[suit_index];
-            index = direction + " " + suit
-            element = document.getElementById(index)
+            element_index = direction + "_" + suit
+            element = document.getElementById(element_index)
             element.value = holding;
         }
     }
@@ -55,11 +55,11 @@ function fillFormWithPartScoreTestData() {
 function clearTestData() {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         direction = DIRECTIONS[direction_index];
-                
+
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
-            index = direction + " " + suit
-            element = document.getElementById(index)
+            element_index = direction + "_" + suit
+            element = document.getElementById(element_index)
             element.value = "";
         }
     }
@@ -70,13 +70,13 @@ function rotateClockwise() {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         old_direction = DIRECTIONS[direction_index];
         new_direction = DIRECTIONS[(direction_index + 1) % 4];
-        
+
         old_hands.push([])
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
-            old_index = old_direction + " " + suit;            
-            old_element = document.getElementById(old_index);
+            element_index = old_direction + "_" + suit;
+            old_element = document.getElementById(element_index);
             old_value = old_element.value;
             old_hands[direction_index].push(old_value)
         }
@@ -87,7 +87,7 @@ function rotateClockwise() {
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
-            element_index = new_direction + " " + suit;    
+            element_index = new_direction + "_" + suit;
             new_element = document.getElementById(element_index);
             new_element.value = old_hands[direction_index][suit_index];
         }
@@ -97,42 +97,42 @@ function rotateClockwise() {
 function collectHands() {
     // Build the structure from the form fields
     var hands = {};
-    
+
     for (direction of DIRECTIONS) {
-        direction_letter = direction.charAt(0).toUpperCase()        
+        direction_letter = direction.charAt(0).toUpperCase()
         hands[direction_letter] = []
 
         for (suit of SUITS) {
             suit_letter = suit.charAt(0).toUpperCase()
-            index = direction + " " + suit
-            holding = document.getElementById(index).value
+            element_index = direction + "_" + suit
+            holding = document.getElementById(element_index).value
 
             for (card of holding) {
                 hands[direction_letter].push(suit_letter + card.toUpperCase())
             }
        }
     }
-    
+
     return hands;
 }
 
-function sendJSON(){        
-    xhr = new XMLHttpRequest(); 
-    url = "http://localhost:5000/api/dds-table/"; 
+function sendJSON(){
+    xhr = new XMLHttpRequest();
+    url = "http://localhost:5000/api/dds-table/";
 
-    xhr.open("POST", url, true); 
+    xhr.open("POST", url, true);
 
-    xhr.setRequestHeader("Content-Type", "application/json"); 
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-    // Create a state change callback 
-    xhr.onreadystatechange = function () { 
-        if (xhr.readyState === 4 && xhr.status === 200) { 
+    // Create a state change callback
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             document.getElementById("result").innerHTML = this.responseText;
         }
-    }; 
+    };
 
     hands = collectHands();
     deal = { "hands": hands }
-    var data = JSON.stringify(deal); 
-    xhr.send(data); 
+    var data = JSON.stringify(deal);
+    xhr.send(data);
 }
