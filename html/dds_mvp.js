@@ -19,8 +19,6 @@ function fillFormWithTestData(nesw) {
             suit = SUITS[suit_index];
             holding = holdings[suit_index];
             index = direction + " " + suit
-            console.log(index)
-            console.log(holding)
             element = document.getElementById(index)
             element.value = holding;
         }
@@ -67,6 +65,35 @@ function clearTestData() {
     }
 }
 
+function rotateClockwise() {
+    old_hands = []
+    for (direction_index = 0; direction_index < 4; direction_index++ ) {
+        old_direction = DIRECTIONS[direction_index];
+        new_direction = DIRECTIONS[(direction_index + 1) % 4];
+        
+        old_hands.push([])
+
+        for (suit_index = 0; suit_index < 4; suit_index++) {
+            suit = SUITS[suit_index];
+            old_index = old_direction + " " + suit;            
+            old_element = document.getElementById(old_index);
+            old_value = old_element.value;
+            old_hands[direction_index].push(old_value)
+        }
+    }
+
+    for (direction_index = 0; direction_index < 4; direction_index++ ) {
+        new_direction = DIRECTIONS[(direction_index + 1) % 4];
+
+        for (suit_index = 0; suit_index < 4; suit_index++) {
+            suit = SUITS[suit_index];
+            element_index = new_direction + " " + suit;    
+            new_element = document.getElementById(element_index);
+            new_element.value = old_hands[direction_index][suit_index];
+        }
+    }
+}
+
 function collectHands() {
     // Build the structure from the form fields
     var hands = {};
@@ -107,6 +134,5 @@ function sendJSON(){
     hands = collectHands();
     deal = { "hands": hands }
     var data = JSON.stringify(deal); 
-    console.log(data)
     xhr.send(data); 
 }
