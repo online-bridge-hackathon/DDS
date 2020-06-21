@@ -154,5 +154,40 @@ class TestDDS(unittest.TestCase):
             self.assertEqual(9, dds_table['N'][declarer],
                              "Every declarer can take 9 tricks at NT.")
 
+    def skip_test_one_trick_deal(self):
+        """
+        This test fails. Presumably we have not yet implemented deals of
+        fewer than 52 cards.
+
+            S A
+            H 
+            D 
+            C 
+
+        S       
+        H           A
+        D      
+        C A         
+
+            S 
+            H
+            D A
+            C 
+        """
+
+        nesw = [
+            "A...",
+            ".A..",
+            "..A.",
+            "...A"
+        ]
+
+        hands = nesw_to_dds_format(nesw)
+
+        dds_table = self.dds.calc_dd_table(hands)
+
+        self.assertEqual(0, dds_table['S']['N'], 'South can take no tricks at notrump')
+        self.assertEqual(1, dds_table['S']['N'], 'South can take one tricks at diamonds')
+
 if __name__ == '__main__':
     unittest.main()
