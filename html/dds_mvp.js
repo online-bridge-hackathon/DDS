@@ -4,8 +4,8 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
-const DIRECTIONS = ['north', 'east', 'south', 'west'];
-const SUITS = ['spades', 'hearts', 'diamonds', 'clubs']
+const DIRECTIONS = ["north", "east", "south", "west"];
+const SUITS = ["spades", "hearts", "diamonds", "clubs"]
 
 
 function fillFormWithTestData(nesw) {
@@ -13,7 +13,7 @@ function fillFormWithTestData(nesw) {
         hand = nesw[direction_index];
         direction = DIRECTIONS[direction_index];
 
-        holdings = hand.split('.')
+        holdings = hand.split(".")
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
