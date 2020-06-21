@@ -4,28 +4,10 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
-function sendJSON(){        
-    xhr = new XMLHttpRequest(); 
-    url = "http://localhost:5000/api/dds-table/"; 
-
-    xhr.open("POST", url, true); 
-
-    xhr.setRequestHeader("Content-Type", "application/json"); 
-
-    // Create a state change callback 
-    xhr.onreadystatechange = function () { 
-        if (xhr.readyState === 4 && xhr.status === 200) { 
-            document.getElementById("result").innerHTML = this.responseText;
-            document.getElementById("log").innerHTML = "nothing to log yet";
-        }
-    }; 
-
-    // deal = {"hands":{"N": ["SA"], "E": ["HA"], "S": ["DA"], "W": ["CA"]}}
-
+function collectHands() {
     // Build the structure from the form fields
     var directions = ['north', 'east', 'south', 'west'];
     var suits = ['clubs', 'diamonds', 'hearts', 'spades']
-    var deal = {};
     var hands = {};
     
     for (direction of directions) {
@@ -42,7 +24,27 @@ function sendJSON(){
             }
        }
     }
+    
+    return hands;
+}
 
+function sendJSON(){        
+    xhr = new XMLHttpRequest(); 
+    url = "http://localhost:5000/api/dds-table/"; 
+
+    xhr.open("POST", url, true); 
+
+    xhr.setRequestHeader("Content-Type", "application/json"); 
+
+    // Create a state change callback 
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState === 4 && xhr.status === 200) { 
+            document.getElementById("result").innerHTML = this.responseText;
+            document.getElementById("log").innerHTML = "nothing to log yet";
+        }
+    }; 
+
+    hands = collectHands();
     var hands_json = JSON.stringify(hands); 
     console.log('hands_json')
     console.log(hands_json)
