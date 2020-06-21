@@ -25,18 +25,39 @@ function sendJSON(){
     // Build the structure from the form fields
     var directions = ['north', 'east', 'south', 'west'];
     var suits = ['clubs', 'diamonds', 'hearts', 'spades']
-
     var deal = {};
+    var hands = {};
     
     for (direction of directions) {
+        direction_letter = direction.charAt(0).toUpperCase()
         deal[direction] = {}
         
-        for (suit of suits) {
-            deal[direction][suit] = document.getElementById("north spades").value
-        }
-    }
+        hands[direction_letter] = []
 
+        for (suit of suits) {
+            suit_letter = suit.charAt(0).toUpperCase()
+            index = direction + " " + suit
+            holding = document.getElementById(index).value
+            deal[direction][suit] = holding
+
+            for (card of holding) {
+                hands[direction_letter].push(suit_letter + card.toUpperCase())
+            }
+            // console.log(hands[direction])
+       }
+    }
+    //console.log("hands")
+    //console.log(hands)
+    var hands_json = JSON.stringify(hands); 
+    console.log('hands_json')
+    console.log(hands_json)
+
+    console.log('deal')
     console.log(deal)
+
+    deal = { "hands": hands }
+    var data = JSON.stringify(deal); 
+    console.log(data)
 
     deal = {"hands": {
                  "S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],
@@ -46,5 +67,6 @@ function sendJSON(){
                 }}
                 
     var data = JSON.stringify(deal); 
+    console.log(data)
     xhr.send(data); 
-} 
+}
