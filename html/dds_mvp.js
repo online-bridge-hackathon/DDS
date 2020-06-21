@@ -13,7 +13,7 @@ function fillFormWithTestData(nesw) {
         var hand = nesw[direction_index];
         var direction = DIRECTIONS[direction_index];
 
-        holdings = hand.split(".");
+        var holdings = hand.split(".");
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
             var suit = SUITS[suit_index];
