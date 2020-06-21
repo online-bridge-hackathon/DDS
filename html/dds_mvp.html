@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+    <link rel="stylesheet" type="text/css" href="dds_mvp.css">
+    <title> 
+        DDS MVP
+    </title> 
+</head> 
+  
+<body>
+<br/>
+<h1>
+Enter a 52-card deal
+</h1>
+    
+    <div style="text-align: center;">
+
+        <div class="grid-container">
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            &spades;&nbsp;<input id="north spades" name="north spades" type="text"><br>
+            <span style="color: red">&hearts;&nbsp;</span><input id="north hearts" name="north hearts" type="text"><br>
+            <span style="color: red">&diams;&nbsp;</span><input id="north diamonds" name="north diamonds" type="text"><br>
+            &clubs;&nbsp;<input id="north clubs" name="north clubs" type="text"><br>
+          </div>
+          <div class="grid-item"></div>  
+          <div class="grid-item">
+            &spades;&nbsp;<input id="west spades" name="north spades" type="text"><br>
+           <span style="color: red">&hearts;&nbsp;</span><input id="west hearts" name="north hearts" type="text"><br>
+            <span style="color: red">&diams;&nbsp;</span><input id="west diamonds" name="north diamonds" type="text"><br>
+            &clubs;&nbsp;<input id="west clubs" name="north clubs" type="text"><br>
+         </div>
+
+          <div class="grid-item"></div>
+          <div class="grid-item">
+                  &spades;&nbsp;<input id="east spades" name="north spades" type="text"><br>
+           <span style="color: red">&hearts;&nbsp;</span><input id="east hearts" name="north hearts" type="text"><br>
+            <span style="color: red">&diams;&nbsp;</span><input id="east diamonds" name="north diamonds" type="text"><br>
+            &clubs;&nbsp;<input id="east clubs" name="north clubs" type="text"><br>
+
+          </div>  
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            &spades;&nbsp;<input id="south spades" name="north spades" type="text"><br>
+           <span style="color: red">&hearts;&nbsp;</span><input id="south hearts" name="north hearts" type="text"><br>
+            <span style="color: red">&diams;&nbsp;</span><input id="south diamonds" name="north diamonds" type="text"><br>
+            &clubs;&nbsp;<input id="south clubs" name="north clubs" type="text"><br>
+            </div>
+           <div class="grid-item"></div>  
+        </div>
+
+    </div>
+<br/>
+
+<div>
+        <button  onclick="sendJSON()">Double-dummy it!</button> 
+</div>
+
+        <p id="result"></p>        
+        <p id="log"></p>        
+
+    <script src="dds_mvp.js"></script> 
+
+</body>
+</html>
