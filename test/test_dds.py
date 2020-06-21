@@ -31,7 +31,14 @@ class TestDDS(unittest.TestCase):
     def setUpClass(cls):
         # Cannot use setUp() because we are only able to instantiate DDS once.
         # This is likely a bug in DDS…
-        cls.dds = DDS()
+        # cls.dds = DDS()
+        pass
+
+    def setUp(self):
+        # When DDS() is called a second time it triggers a bug whose symptom is
+        # a C++ Memory::GetPtr error.
+        self.dds = DDS()
+        pass
 
     def test_one_sample_deal(self):
         """
