@@ -11,6 +11,8 @@
 import unittest
 
 from test.utilities import nesw_to_dds_format
+from test.utilities import rotate_nesw_to_eswn
+
 from src.dds import DDS
 
 # So we can use multi-line strongs as comments:
@@ -23,7 +25,6 @@ class TestDDS(unittest.TestCase):
     TODO:   Test for different values of max_threads.
             Test for invalid input, e.g. too many cards, too few, duplicated card.
             Tweak input by exchanging an A and a K, make sure output changes to match.
-            Rotate the grand slam deal so that EW can take all the tricks.
     """
 
     @classmethod
@@ -101,6 +102,22 @@ class TestDDS(unittest.TestCase):
                 self.assertEqual(0, dds_table[denomination][declarer],
                                  "EW can take 0 tricks in any denomination.")
 
+        # Now test the same deal, but rotated 90 degrees clockwise
+
+        nesw = rotate_nesw_to_eswn(nesw)
+
+        hands = nesw_to_dds_format(nesw)
+
+        dds_table = self.dds.calc_dd_table(hands)
+
+        for denomination in ['C', 'D', 'H', 'S', 'N']:
+            for declarer in ['N', 'S']:
+                self.assertEqual(0, dds_table[denomination][declarer],
+                                 "NS can take 0 tricks in any denomination.")
+            for declarer in ['E', 'W']:
+                self.assertEqual(13, dds_table[denomination][declarer],
+                                 "EW can take 13 tricks in any denomination.")
+        
     def test_everyone_makes_3n(self):
         """
         Unusual deal!
