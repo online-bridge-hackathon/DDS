@@ -5,7 +5,48 @@
 //   https://opensource.org/licenses/MIT
 
 const DIRECTIONS = ['north', 'east', 'south', 'west'];
-const SUITS = ['clubs', 'diamonds', 'hearts', 'spades']
+const SUITS = ['spades', 'hearts', 'diamonds', 'clubs']
+
+
+function fillFormWithTestData() {
+    const nesw = [
+        "AKQJ.AKQJ.T98.T9",
+        "5432.5432.32.432",
+        "T98.T9.AKQJ.AKQJ",
+        "76.876.7654.8765"
+    ]
+    
+    for (direction_index = 0; direction_index < 4; direction_index++ ) {
+        hand = nesw[direction_index];
+        direction = DIRECTIONS[direction_index];
+        
+        holdings = hand.split('.')
+        
+        for (suit_index = 0; suit_index < 4; suit_index++) {
+            suit = SUITS[suit_index];
+            holding = holdings[suit_index];
+            index = direction + " " + suit
+            console.log(index)
+            console.log(holding)
+            element = document.getElementById(index)
+            element.value = holding;
+        }
+    }
+}
+
+function clearTestData() {
+    for (direction_index = 0; direction_index < 4; direction_index++ ) {
+        direction = DIRECTIONS[direction_index];
+                
+        for (suit_index = 0; suit_index < 4; suit_index++) {
+            suit = SUITS[suit_index];
+            holding = holdings[suit_index];
+            index = direction + " " + suit
+            element = document.getElementById(index)
+            element.value = "";
+        }
+    }
+}
 
 function collectHands() {
     // Build the structure from the form fields
@@ -41,26 +82,11 @@ function sendJSON(){
     xhr.onreadystatechange = function () { 
         if (xhr.readyState === 4 && xhr.status === 200) { 
             document.getElementById("result").innerHTML = this.responseText;
-            document.getElementById("log").innerHTML = "nothing to log yet";
         }
     }; 
 
     hands = collectHands();
-    var hands_json = JSON.stringify(hands); 
-    console.log('hands_json')
-    console.log(hands_json)
-
     deal = { "hands": hands }
-    var data = JSON.stringify(deal); 
-    console.log(data)
-
-    deal = {"hands": {
-                 "S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],
-                 "W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK", "H8"],
-                 "N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],
-                 "E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]
-                }}
-                
     var data = JSON.stringify(deal); 
     console.log(data)
     xhr.send(data); 
