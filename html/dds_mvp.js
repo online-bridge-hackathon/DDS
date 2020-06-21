@@ -29,31 +29,23 @@ function sendJSON(){
     var hands = {};
     
     for (direction of directions) {
-        direction_letter = direction.charAt(0).toUpperCase()
-        deal[direction] = {}
-        
+        direction_letter = direction.charAt(0).toUpperCase()        
         hands[direction_letter] = []
 
         for (suit of suits) {
             suit_letter = suit.charAt(0).toUpperCase()
             index = direction + " " + suit
             holding = document.getElementById(index).value
-            deal[direction][suit] = holding
 
             for (card of holding) {
                 hands[direction_letter].push(suit_letter + card.toUpperCase())
             }
-            // console.log(hands[direction])
        }
     }
-    //console.log("hands")
-    //console.log(hands)
+
     var hands_json = JSON.stringify(hands); 
     console.log('hands_json')
     console.log(hands_json)
-
-    console.log('deal')
-    console.log(deal)
 
     deal = { "hands": hands }
     var data = JSON.stringify(deal); 
