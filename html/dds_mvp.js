@@ -45,6 +45,15 @@ function fillFormWithEveryoneMakes3nTestData() {
     ])
 }
 
+function fillFormWithPartScoreTestData() {
+    fillFormWithTestData([
+        "AQ85.AK976.5.J87",
+        "JT.QJ5432.Q9.KQ9",
+        "972..JT863.A6432",
+        "K643.T8.AK742.T5"
+    ])
+}
+
 function clearTestData() {
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         direction = DIRECTIONS[direction_index];
