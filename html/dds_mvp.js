@@ -126,7 +126,6 @@ function sendJSON(){
 
     xhr.setRequestHeader("Content-Type", "application/json");
 
-    // Create a state change callback
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             document.getElementById("result").innerHTML = this.responseText;
