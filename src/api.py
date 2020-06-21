@@ -1,3 +1,9 @@
+# To work around an apparent reentrancy bug in the C++ dds library,
+# invoke as DDS_REENTRANCY_WORKAROUND=1 python3 api.py from a bash shell,
+# or set the variable in whatever way your OS requires.
+
+import os
+
 from flask import Flask, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
@@ -10,6 +16,9 @@ api = Api(app)
 
 
 class DDSTable(Resource):
+    if os.environ.get('DDS_REENTRANCY_WORKAROUND'):
+        dds = DDS(max_threads=2)
+        
     def get(self):
         return {'hello': 'world'}
 
@@ -18,8 +27,11 @@ class DDSTable(Resource):
         data = request.get_json()
         # Verify the data here
         # self.verifyinput(data)
-        dds = DDS(max_threads=2)
-        dds_table = dds.calc_dd_table(data['hands'])
+        
+        if not os.environ.get('DDS_REENTRANCY_WORKAROUND'):
+            self.dds = DDS(max_threads=2)
+        
+        dds_table = self.dds.calc_dd_table(data['hands'])
         return dds_table
 
 class DDSScore(Resource):
@@ -60,4 +72,3 @@ if __name__ == "__main__":
     # Generate the table at the end of the board
     # state['hands']['W'].append('H8')
     # print(dds.calc_dd_table(state['hands']))
-
