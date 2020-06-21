@@ -5,7 +5,7 @@
 //   https://opensource.org/licenses/MIT
 
 const DIRECTIONS = ["north", "east", "south", "west"];
-const SUITS = ["spades", "hearts", "diamonds", "clubs"]
+const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 
 
 function fillFormWithTestData(nesw) {
@@ -13,13 +13,13 @@ function fillFormWithTestData(nesw) {
         hand = nesw[direction_index];
         direction = DIRECTIONS[direction_index];
 
-        holdings = hand.split(".")
+        holdings = hand.split(".");
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
             holding = holdings[suit_index];
-            element_index = direction + "_" + suit
-            element = document.getElementById(element_index)
+            element_index = direction + "_" + suit;
+            element = document.getElementById(element_index);
             element.value = holding;
         }
     }
@@ -31,7 +31,7 @@ function fillFormWithGrandSlamTestData() {
         "5432.5432.32.432",
         "T98.T9.AKQJ.AKQJ",
         "76.876.7654.8765"
-    ])
+    ]);
 }
 
 function fillFormWithEveryoneMakes3nTestData() {
@@ -40,7 +40,7 @@ function fillFormWithEveryoneMakes3nTestData() {
         "KJ..A8765432.QT9",
         "A8765432.QT9..KJ",
         ".KJ.QT9.A8765432"
-    ])
+    ]);
 }
 
 function fillFormWithPartScoreTestData() {
@@ -49,7 +49,7 @@ function fillFormWithPartScoreTestData() {
         "JT.QJ5432.Q9.KQ9",
         "972..JT863.A6432",
         "K643.T8.AK742.T5"
-    ])
+    ]);
 }
 
 function clearTestData() {
@@ -58,27 +58,28 @@ function clearTestData() {
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
-            element_index = direction + "_" + suit
-            element = document.getElementById(element_index)
+            element_index = direction + "_" + suit;
+            element = document.getElementById(element_index);
             element.value = "";
         }
     }
 }
 
 function rotateClockwise() {
-    old_hands = []
+    old_hands = [];
+
     for (direction_index = 0; direction_index < 4; direction_index++ ) {
         old_direction = DIRECTIONS[direction_index];
         new_direction = DIRECTIONS[(direction_index + 1) % 4];
 
-        old_hands.push([])
+        old_hands.push([]);
 
         for (suit_index = 0; suit_index < 4; suit_index++) {
             suit = SUITS[suit_index];
             element_index = old_direction + "_" + suit;
             old_element = document.getElementById(element_index);
             old_value = old_element.value;
-            old_hands[direction_index].push(old_value)
+            old_hands[direction_index].push(old_value);
         }
     }
 
@@ -99,16 +100,16 @@ function collectHands() {
     var hands = {};
 
     for (direction of DIRECTIONS) {
-        direction_letter = direction.charAt(0).toUpperCase()
-        hands[direction_letter] = []
+        direction_letter = direction.charAt(0).toUpperCase();
+        hands[direction_letter] = [];
 
         for (suit of SUITS) {
-            suit_letter = suit.charAt(0).toUpperCase()
-            element_index = direction + "_" + suit
-            holding = document.getElementById(element_index).value
+            suit_letter = suit.charAt(0).toUpperCase();
+            element_index = direction + "_" + suit;
+            holding = document.getElementById(element_index).value;
 
             for (card of holding) {
-                hands[direction_letter].push(suit_letter + card.toUpperCase())
+                hands[direction_letter].push(suit_letter + card.toUpperCase());
             }
        }
     }
