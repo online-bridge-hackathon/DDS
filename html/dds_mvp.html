@@ -14,10 +14,7 @@
         DDS MVP
     </title>
 </head>
-
 <body>
-
-    <br/>
     <h1>
     Enter a 52-card deal<br/>
     </h1>
@@ -28,7 +25,8 @@
     <button  onclick="fillFormWithPartScoreTestData()">Part-score test deal</button>
     <button  onclick="rotateClockwise()">Rotate the hands clockwise</button>
 
-    <div style="text-align: center;">
+    <br/>
+    <br/>
 
     <div class="grid-container">
         <div class="grid-item"></div>
@@ -62,16 +60,12 @@
         <div class="grid-item"></div>
     </div>
 
-    </div>
     <br/>
 
-    <div>
-        <button  onclick="sendJSON()">Double-dummy it!</button>
-    </div>
+    <button  onclick="sendJSON()">Double-dummy it!</button>
 
     <p id="result"></p>
 
     <script src="dds_mvp.js"></script>
-
 </body>
 </html>
