@@ -36,9 +36,16 @@ https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docke
 ### Build & Deploy DDS api ###
 
 Prerequirements:
+0. Download code
 1. Docker
 2. kubectl
 3. helm (version 3)
+4. gcloud
+
+Configure gcloud auth:
+5. Run `gcloud auth login <your.email@whatever.com>`
+6. Run `gcloud auth application-default login`
+
 
 Build the application stack using:
 ```
