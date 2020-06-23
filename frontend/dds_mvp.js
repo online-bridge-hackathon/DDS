@@ -119,10 +119,10 @@ function collectHands() {
 }
 
 function inputIsValid() {
-    var deal = collectHands();
+    var hands = collectHands();
 
-    for (var direction in deal) {     
-        if (deal[direction].length != 13) {
+    for (var direction in hands) {     
+        if (hands[direction].length != 13) {
             return false;
         }
     }
