@@ -4,16 +4,16 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
   labels:
-    app: dds-api
+    app: dds-test-api
 spec:
   replicas: {{ int .Values.replicas }}
   selector:
     matchLabels:
-      app: dds-api
+      app: dds-test-api
   template:
     metadata:
       labels:
-        app: dds-api
+        app: dds-test-api
     spec:
       containers:
       - name: api
@@ -35,7 +35,7 @@ metadata:
   name: {{ .Release.Name }}-service
 spec:
   selector:
-    app: dds-api
+    app: dds-test-api
   ports:
   - port: 80
     targetPort: 5000
@@ -50,7 +50,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt-production
   labels:
-    app: dds-api
+    app: dds-test-api
   name: {{ .Release.Name }}-ingress
 spec:
   tls:

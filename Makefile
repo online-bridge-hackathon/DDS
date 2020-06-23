@@ -1,8 +1,8 @@
 DOCKER_REPO ?= gcr.io/online-bridge-hackathon-2020
 VERSION ?= $(shell cat VERSION)
-DOCKER_TAG=${DOCKER_REPO}/dds-api:${VERSION}
+DOCKER_TAG=${DOCKER_REPO}/dds-test-api:${VERSION}
 
-EXTERNAL_ADDRES ?= dds.hackathon.globalbridge.app
+EXTERNAL_ADDRES ?= dds-test.hackathon.globalbridge.app
 
 DDS_K8S_NS ?= dds-api
 GCP_PROJECT ?= online-bridge-hackathon-2020
@@ -18,14 +18,14 @@ push:
 	docker push ${DOCKER_TAG}
 
 deploy: set_gcp_context ensure_ns
-	helm upgrade --install dds-api ./chart \
+	helm upgrade --install dds-test-api ./chart \
 		--set image="${DOCKER_TAG}" \
 		--set externalHostname="${EXTERNAL_ADDRES}" \
 		--namespace ${DDS_K8S_NS} \
 		--history-max=10
 
 uninstall: set_gcp_context
-	helm del dds-api --namespace ${DDS_K8S_NS}
+	helm del dds-test-api --namespace ${DDS_K8S_NS}
 
 set_gcp_context:
 	gcloud container clusters get-credentials ${GKE_CLUSTER_NAME} --zone ${GKE_ZONE} --project ${GCP_PROJECT}
