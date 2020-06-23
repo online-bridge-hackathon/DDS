@@ -118,26 +118,44 @@ function collectHands() {
     return hands;
 }
 
-function sendJSON(){
-    var xhr = new XMLHttpRequest();
-    const URL = "http://localhost:5000/api/dds-table/";
+function inputIsValid() {
+    var deal = collectHands();
 
-    // This fails as of 2020-06-21 due to:
-    // Access from origin 'null' has been blocked by CORS policy
-    // const URL = "https://dds.hackathon.globalbridge.app/api/dds-table/";
-
-    xhr.open("POST", URL, true);
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            document.getElementById("result").innerHTML = this.responseText;
+    for (var direction in deal) {     
+        if (deal[direction].length != 13) {
+            return false;
         }
-    };
+    }
 
-    var hands = collectHands();
-    var deal = { "hands": hands };
-    var data = JSON.stringify(deal);
-    xhr.send(data);
+    return true;
+}
+
+function sendJSON() {
+    if (inputIsValid()) {
+        var xhr = new XMLHttpRequest();
+        const URL = "http://localhost:5000/api/dds-table/";
+
+        // This fails as of 2020-06-21 due to:
+        // Access from origin 'null' has been blocked by CORS policy
+        // That's because an older version of our service is deployed.
+        // const URL = "https://dds.hackathon.globalbridge.app/api/dds-table/";
+
+        xhr.open("POST", URL, true);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById("result").innerHTML = this.responseText;
+            }
+        };
+
+        document.getElementById("result").innerHTML = "";
+        var hands = collectHands();
+        var deal = { "hands": hands };
+        var data = JSON.stringify(deal);
+        xhr.send(data);
+    } else {
+        document.getElementById("result").innerHTML = "Please enter 13 cards per hand.";
+    }
 }
