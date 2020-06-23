@@ -118,8 +118,7 @@ function collectHands() {
     return hands;
 }
 
-function inputIsValid() {
-    var hands = collectHands();
+function inputIsValid(hands) {
 
     for (var direction in hands) {     
         if (hands[direction].length != 13) {
@@ -131,7 +130,9 @@ function inputIsValid() {
 }
 
 function sendJSON() {
-    if (inputIsValid()) {
+    var hands = collectHands();
+
+    if (inputIsValid(hands)) {
         var xhr = new XMLHttpRequest();
         const URL = "http://localhost:5000/api/dds-table/";
 
@@ -151,7 +152,6 @@ function sendJSON() {
         };
 
         document.getElementById("result").innerHTML = "";
-        var hands = collectHands();
         var deal = { "hands": hands };
         var data = JSON.stringify(deal);
         xhr.send(data);
