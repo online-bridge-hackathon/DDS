@@ -78,9 +78,9 @@ def encode_deal(hands):
 class DDS:
     def __init__(self, max_threads=0):
         if platform.system() == "Windows":
-            libname = "dds.dll"
+            libname = "libdds.dll"
         else:
-            libname = "libdds.so"
+            libname = "libdds.so.2"
         self.libdds = libloader.LoadLibrary(libname)
         self.libdds.SetMaxThreads(max_threads)
 
