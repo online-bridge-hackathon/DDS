@@ -43,7 +43,9 @@ Prerequirements:
 4. gcloud
 
 Configure gcloud auth:
+
 5. Run `gcloud auth login <your.email@whatever.com>`
+
 6. Run `gcloud auth application-default login`
 
 
