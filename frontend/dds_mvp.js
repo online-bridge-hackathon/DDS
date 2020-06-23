@@ -122,17 +122,19 @@ function inputIsValid(hands) {
 
     for (var direction in hands) {     
         if (hands[direction].length != 13) {
-            return false;
+            return "Please enter 13 cards per hand.";
         }
     }
 
-    return true;
+    return "";
 }
 
 function sendJSON() {
     var hands = collectHands();
 
-    if (inputIsValid(hands)) {
+    const error_message = inputIsValid(hands);
+
+    if (error_message.length == 0) {
         var xhr = new XMLHttpRequest();
         const URL = "http://localhost:5000/api/dds-table/";
 
@@ -156,6 +158,6 @@ function sendJSON() {
         var data = JSON.stringify(deal);
         xhr.send(data);
     } else {
-        document.getElementById("result").innerHTML = "Please enter 13 cards per hand.";
+        document.getElementById("result").innerHTML = error_message;
     }
 }
