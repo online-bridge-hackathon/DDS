@@ -163,30 +163,31 @@ function sendJSON() {
 
     const error_message = inputIsValid(hands);
 
-    if (error_message.length == 0) {
-        var xhr = new XMLHttpRequest();
-        const URL = "http://localhost:5000/api/dds-table/";
-
-        // This fails as of 2020-06-21 due to:
-        // Access from origin 'null' has been blocked by CORS policy
-        // That's because an older version of our service is deployed.
-        // const URL = "https://dds.hackathon.globalbridge.app/api/dds-table/";
-
-        xhr.open("POST", URL, true);
-
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById("result").innerHTML = this.responseText;
-            }
-        };
-
-        document.getElementById("result").innerHTML = "";
-        var deal = { "hands": hands };
-        var data = JSON.stringify(deal);
-        xhr.send(data);
-    } else {
+    if (error_message.length) {
         document.getElementById("result").innerHTML = error_message;
+        return;
     }
+    
+    var xhr = new XMLHttpRequest();
+    const URL = "http://localhost:5000/api/dds-table/";
+
+    // This fails as of 2020-06-21 due to:
+    // Access from origin 'null' has been blocked by CORS policy
+    // That's because an older version of our service is deployed.
+    // const URL = "https://dds.hackathon.globalbridge.app/api/dds-table/";
+
+    xhr.open("POST", URL, true);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("result").innerHTML = this.responseText;
+        }
+    };
+
+    document.getElementById("result").innerHTML = "";
+    var deal = { "hands": hands };
+    var data = JSON.stringify(deal);
+    xhr.send(data);
 }
