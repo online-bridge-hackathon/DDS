@@ -55,12 +55,8 @@ function fillFormWithPartScoreTestData() {
 function * directions_and_suits() {
     // Generator
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        const direction = DIRECTIONS[direction_index];
-
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            const suit = SUITS[suit_index];
-
+    for (const direction of DIRECTIONS) {
+        for (const suit of SUITS) {
             yield { "direction": direction, "suit": suit };
         }
     }
