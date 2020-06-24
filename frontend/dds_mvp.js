@@ -8,7 +8,7 @@
 
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
-
+const PIPS = "AKQJT98765432";
 
 function fillFormWithTestData(nesw) {
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
@@ -120,9 +120,18 @@ function collectHands() {
 
 function inputIsValid(hands) {
 
-    for (var direction in hands) {     
-        if (hands[direction].length != 13) {
+    for (var direction in hands) {
+        const hand = hands[direction];
+
+        if (hand.length != 13) {
             return "Please enter 13 cards per hand.";
+        }
+        
+        for (const card of hand) {
+            const pip = card.substring(1);
+            if (!PIPS.includes(pip)) {
+                return "Please use only these pips: " + PIPS;
+            }
         }
     }
 
