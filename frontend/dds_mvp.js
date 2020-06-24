@@ -18,7 +18,10 @@
             pageLoad
             sendJSON
             */
-            
+
+// It's also useful to pass the code through
+// https://jshint.com/ and https://jslint.com/
+
 "use strict";
 
 const DIRECTIONS = ["north", "east", "south", "west"];
