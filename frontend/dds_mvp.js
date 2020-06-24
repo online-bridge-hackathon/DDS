@@ -54,7 +54,9 @@ function fillFormWithPartScoreTestData() {
     ]);
 }
 
-function clearTestData() {
+function * hand_elements() {
+    // Generator
+
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         var direction = DIRECTIONS[direction_index];
 
@@ -62,8 +64,14 @@ function clearTestData() {
             var suit = SUITS[suit_index];
             var element_index = direction + "_" + suit;
             var element = document.getElementById(element_index);
-            element.value = "";
+            yield element;
         }
+    }
+}
+
+function clearTestData() {
+    for (const element of hand_elements()) {
+        element.value = "";
     }
 }
 
@@ -142,7 +150,6 @@ function inputIsValid(hands) {
 function pageLoad() {    
     document.getElementById("valid-pips").innerHTML = PIPS;
 }
-
 
 function sendJSON() {
     var hands = collectHands();
