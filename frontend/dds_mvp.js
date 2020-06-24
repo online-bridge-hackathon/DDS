@@ -105,7 +105,8 @@ function collectHands() {
 
     for (const ds of directions_and_suits()) {
         var direction_letter = ds["direction"].charAt(0).toUpperCase();
-            hands[direction_letter] = hands[direction_letter] || [];
+
+        hands[direction_letter] = hands[direction_letter] || [];
 
         var suit_letter = ds["suit"].charAt(0).toUpperCase();
         var element_index = ds["direction"] + "_" + ds["suit"];
