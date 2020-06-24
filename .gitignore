@@ -3,3 +3,4 @@ __pycache__/
 *.log
 *DS*Store*
 
+src/dump.txt
