@@ -101,15 +101,15 @@ function rotateClockwise() {
         }
     }
 
-    for (var direction_index = 1; direction_index < 5; direction_index++ ) {
-        const new_direction = DIRECTIONS[(direction_index) % 4];
-        const old_hand = old_hands.shift()
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
+        const direction = DIRECTIONS[direction_index];
+        const old_hand_index = (direction_index + 3) % 4;
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
             const suit = SUITS[suit_index];
-            const element_index = new_direction + "_" + suit;
+            const element_index = direction + "_" + suit;
             const new_element = document.getElementById(element_index);
-            new_element.value = old_hand[suit_index];
+            new_element.value = old_hands[old_hand_index][suit_index];
         }
     }
 }
