@@ -85,20 +85,20 @@ function clearTestData() {
 }
 
 function rotateClockwise() {
-    var old_hands = [];
+    var hands = [];
 
     for (const element of hand_elements()) {
-        old_hands.push(element.value);
+        hands.push(element.value);
     }
 
     // rotate west to north, and so on
     for (var i = 0; i < 4; i++) {
-        var west = old_hands.pop();
-        old_hands.unshift(west);
+        var west = hands.pop();
+        hands.unshift(west);
     }
 
     for (const element of hand_elements()) {
-        element.value = old_hands.shift();
+        element.value = hands.shift();
     }
 }
 
