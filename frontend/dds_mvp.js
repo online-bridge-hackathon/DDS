@@ -54,18 +54,31 @@ function fillFormWithPartScoreTestData() {
     ]);
 }
 
-function * hand_elements() {
+function * hand_element_names() {
     // Generator
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var direction = DIRECTIONS[direction_index];
+        const direction = DIRECTIONS[direction_index];
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = direction + "_" + suit;
-            var element = document.getElementById(element_index);
-            yield element;
+            const suit = SUITS[suit_index];
+
+            yield [direction, suit];
         }
+    }
+}
+
+
+function * hand_elements() {
+    // Generator
+
+    for (const direction_and_suit of hand_element_names()) {
+        const direction = direction_and_suit[0];
+        const suit = direction_and_suit[1];
+
+        var element_index = direction + "_" + suit;
+        var element = document.getElementById(element_index);
+        yield element;
     }
 }
 
