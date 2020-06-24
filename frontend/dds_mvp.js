@@ -89,7 +89,6 @@ function rotateClockwise() {
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         var old_direction = DIRECTIONS[direction_index];
-        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
 
         old_hands.push([]);
 
