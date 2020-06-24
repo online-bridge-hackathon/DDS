@@ -100,16 +100,19 @@ function rotateClockwise() {
             old_hands[direction_index].push(old_value);
         }
     }
+    
+    // rotate west to north, and so on 
+    const west = old_hands.pop();
+    old_hands.unshift(west);
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         const direction = DIRECTIONS[direction_index];
-        const old_hand_index = (direction_index + 3) % 4;
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
             const suit = SUITS[suit_index];
             const element_index = direction + "_" + suit;
             const new_element = document.getElementById(element_index);
-            new_element.value = old_hands[old_hand_index][suit_index];
+            new_element.value = old_hands[direction_index][suit_index];
         }
     }
 }
