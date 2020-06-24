@@ -87,30 +87,18 @@ function clearTestData() {
 function rotateClockwise() {
     var old_hands = [];
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        const direction = DIRECTIONS[direction_index];
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            const suit = SUITS[suit_index];
-            const element_index = direction + "_" + suit;
-            const element = document.getElementById(element_index);
-            old_hands.push(element.value);
-        }
+    for (const element of hand_elements()) {
+        old_hands.push(element.value);
     }
-    
+
     // rotate west to north, and so on
     for (var i = 0; i < 4; i++) {
         var west = old_hands.pop();
         old_hands.unshift(west);
     }
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            const direction = DIRECTIONS[direction_index];
-            const suit = SUITS[suit_index];
-            const element_index = direction + "_" + suit;
-            const element = document.getElementById(element_index);
-            element.value = old_hands.shift();
-        }
+    for (const element of hand_elements()) {
+        element.value = old_hands.shift();
     }
 }
 
