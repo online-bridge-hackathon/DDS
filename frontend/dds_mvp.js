@@ -107,12 +107,14 @@ function rotateClockwise() {
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         const direction = DIRECTIONS[direction_index];
+        
+        const old_hand = old_hands.shift();
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
             const suit = SUITS[suit_index];
             const element_index = direction + "_" + suit;
             const new_element = document.getElementById(element_index);
-            new_element.value = old_hands[direction_index][suit_index];
+            new_element.value = old_hand[suit_index];
         }
     }
 }
