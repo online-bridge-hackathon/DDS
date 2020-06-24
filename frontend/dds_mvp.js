@@ -119,6 +119,7 @@ function collectHands() {
 }
 
 function inputIsValid(hands) {
+    // TODO Make sure no card is repeated.
 
     for (var direction in hands) {
         const hand = hands[direction];
@@ -137,6 +138,11 @@ function inputIsValid(hands) {
 
     return "";
 }
+
+function pageLoad() {    
+    document.getElementById("valid-pips").innerHTML = PIPS;
+}
+
 
 function sendJSON() {
     var hands = collectHands();
