@@ -103,12 +103,13 @@ function rotateClockwise() {
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         var new_direction = DIRECTIONS[(direction_index + 1) % 4];
+        const old_hand = old_hands.shift()
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
             var suit = SUITS[suit_index];
             var element_index = new_direction + "_" + suit;
             var new_element = document.getElementById(element_index);
-            new_element.value = old_hands[direction_index][suit_index];
+            new_element.value = old_hand[suit_index];
         }
     }
 }
