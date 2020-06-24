@@ -28,6 +28,13 @@ const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
 
+const SUIT_SYMBOLS = {
+    "S" : "&spades;",
+    "H" : "<span style='color: red'>&hearts;</span>",
+    "D" : "<span style='color: red'>&diams;</span>",
+    "C" : "&clubs;"
+}
+
 function fillFormWithTestData(nesw) {
     var holdings = [];
 
@@ -146,14 +153,20 @@ function inputIsValid(hands) {
         }
 
         for (const card of hand) {
+            const suit_letter = card.substring(0, 1);
             const pip = card.substring(1);
             if (!PIPS.includes(pip)) {
                 return "Please use only these pips: " + PIPS;
             }
             
-            console.log(card);
             if (deck[card]) {
-                return "Duplicated card: " + card;
+                var suit_symbol = SUIT_SYMBOLS[suit_letter];
+                console.log(SUIT_SYMBOLS);
+                console.log(card);
+                console.log(pip);
+                console.log(suit_letter);
+                console.log(suit_symbol);
+                return "Duplicated card: " + suit_symbol + pip;
             } else {
                 deck[card] = 1;
             }
