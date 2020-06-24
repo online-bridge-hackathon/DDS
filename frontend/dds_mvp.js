@@ -80,7 +80,7 @@ function * hand_elements() {
     // Generator
 
     for (const ds of directions_and_suits()) {
-        var element_index = ds["direction"] + "_" + ds["suit"];
+        var element_index = ds.direction + "_" + ds.suit;
         var element = document.getElementById(element_index);
         yield element;
     }
@@ -114,12 +114,12 @@ function collectHands() {
     var hands = {};
 
     for (const ds of directions_and_suits()) {
-        var direction_letter = ds["direction"].charAt(0).toUpperCase();
+        var direction_letter = ds.direction.charAt(0).toUpperCase();
 
         hands[direction_letter] = hands[direction_letter] || [];
 
-        var suit_letter = ds["suit"].charAt(0).toUpperCase();
-        var element_index = ds["direction"] + "_" + ds["suit"];
+        var suit_letter = ds.suit.charAt(0).toUpperCase();
+        var element_index = ds.direction + "_" + ds.suit;
         var holding = document.getElementById(element_index).value;
 
         for (const card of holding) {
