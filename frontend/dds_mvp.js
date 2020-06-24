@@ -4,12 +4,10 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
-"use strict";
-
 // ESLint configuration
 // https://eslint.org/demo
-// ECMA Version: 2015
-// Environment: browser
+//     ECMA Version: 2015
+//     Environment: browser
 
 /* eslint-env es6 */
 /* exported fillFormWithGrandSlamTestData
@@ -20,6 +18,8 @@
             pageLoad
             sendJSON
             */
+            
+"use strict";
 
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
