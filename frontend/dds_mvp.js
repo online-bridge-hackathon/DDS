@@ -161,11 +161,6 @@ function inputIsValid(hands) {
             
             if (deck[card]) {
                 var suit_symbol = SUIT_SYMBOLS[suit_letter];
-                console.log(SUIT_SYMBOLS);
-                console.log(card);
-                console.log(pip);
-                console.log(suit_letter);
-                console.log(suit_symbol);
                 return "Duplicated card: " + suit_symbol + pip;
             } else {
                 deck[card] = 1;
