@@ -109,10 +109,12 @@ function collectHands() {
     var hands = {};
 
     for (var direction of DIRECTIONS) {
-        var direction_letter = direction.charAt(0).toUpperCase();
-        hands[direction_letter] = [];
-
         for (var suit of SUITS) {
+            var direction_letter = direction.charAt(0).toUpperCase();
+            if (!hands[direction_letter]) {
+                hands[direction_letter] = [];
+            }
+
             var suit_letter = suit.charAt(0).toUpperCase();
             var element_index = direction + "_" + suit;
             var holding = document.getElementById(element_index).value;
