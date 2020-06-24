@@ -129,7 +129,7 @@ function inputIsValid(hands) {
         if (hand.length != 13) {
             return "Please enter 13 cards per hand.";
         }
-        
+
         for (const card of hand) {
             const pip = card.substring(1);
             if (!PIPS.includes(pip)) {
@@ -141,7 +141,7 @@ function inputIsValid(hands) {
     return "";
 }
 
-function pageLoad() {    
+function pageLoad() {
     document.getElementById("valid-pips").innerHTML = PIPS;
 }
 
