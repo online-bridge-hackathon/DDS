@@ -105,12 +105,18 @@ function rotateClockwise() {
     const west = old_hands.pop();
     old_hands.unshift(west);
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        const direction = DIRECTIONS[direction_index];
-        
-        const old_hand = old_hands.shift();
+    var old_direction = "";
 
+    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
         for (var suit_index = 0; suit_index < 4; suit_index++) {
+            const direction = DIRECTIONS[direction_index];
+        
+            var old_hand;
+            if (direction != old_direction) {
+                old_hand = old_hands.shift();
+                old_direction = direction;
+            }
+
             const suit = SUITS[suit_index];
             const element_index = direction + "_" + suit;
             const new_element = document.getElementById(element_index);
