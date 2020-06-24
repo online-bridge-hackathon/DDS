@@ -135,6 +135,8 @@ function collectHands() {
 
 function inputIsValid(hands) {
     // TODO Make sure no card is repeated.
+    
+    var deck = {}
 
     for (const direction in hands) {
         const hand = hands[direction];
@@ -147,6 +149,13 @@ function inputIsValid(hands) {
             const pip = card.substring(1);
             if (!PIPS.includes(pip)) {
                 return "Please use only these pips: " + PIPS;
+            }
+            
+            console.log(card);
+            if (deck[card]) {
+                return "Duplicated card: " + card;
+            } else {
+                deck[card] = 1;
             }
         }
     }
