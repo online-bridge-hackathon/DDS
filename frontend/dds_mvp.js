@@ -10,20 +10,18 @@ const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
 
+
 function fillFormWithTestData(nesw) {
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var hand = nesw[direction_index];
-        var direction = DIRECTIONS[direction_index];
+    var holdings = [];
 
-        var holdings = hand.split(".");
-
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var holding = holdings[suit_index];
-            var element_index = direction + "_" + suit;
-            var element = document.getElementById(element_index);
-            element.value = holding;
+    for (const hand of nesw) {
+        for (const holding of hand.split(".")) {
+            holdings.push(holding);
         }
+    }
+
+    for (const element of hand_elements()) {
+        element.value = holdings.shift();
     }
 }
 
@@ -115,7 +113,7 @@ function collectHands() {
         var element_index = ds["direction"] + "_" + ds["suit"];
         var holding = document.getElementById(element_index).value;
 
-        for (var card of holding) {
+        for (const card of holding) {
             hands[direction_letter].push(suit_letter + card.toUpperCase());
         }
     }
@@ -126,7 +124,7 @@ function collectHands() {
 function inputIsValid(hands) {
     // TODO Make sure no card is repeated.
 
-    for (var direction in hands) {
+    for (const direction in hands) {
         const hand = hands[direction];
 
         if (hand.length != 13) {
