@@ -88,27 +88,27 @@ function rotateClockwise() {
     var old_hands = [];
 
     for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var old_direction = DIRECTIONS[direction_index];
+        const direction = DIRECTIONS[direction_index];
 
         old_hands.push([]);
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = old_direction + "_" + suit;
-            var old_element = document.getElementById(element_index);
-            var old_value = old_element.value;
+            const suit = SUITS[suit_index];
+            const element_index = direction + "_" + suit;
+            const old_element = document.getElementById(element_index);
+            const old_value = old_element.value;
             old_hands[direction_index].push(old_value);
         }
     }
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
+    for (var direction_index = 1; direction_index < 5; direction_index++ ) {
+        const new_direction = DIRECTIONS[(direction_index) % 4];
         const old_hand = old_hands.shift()
 
         for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = new_direction + "_" + suit;
-            var new_element = document.getElementById(element_index);
+            const suit = SUITS[suit_index];
+            const element_index = new_direction + "_" + suit;
+            const new_element = document.getElementById(element_index);
             new_element.value = old_hand[suit_index];
         }
     }
