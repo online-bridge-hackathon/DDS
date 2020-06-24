@@ -6,10 +6,24 @@
 
 "use strict";
 
+// ESLint configuration
+// https://eslint.org/demo
+// ECMA Version: 2015
+// Environment: browser
+
+/* eslint-env es6 */
+/* exported fillFormWithGrandSlamTestData
+            fillFormWithEveryoneMakes3nTestData
+            fillFormWithPartScoreTestData
+            clearTestData
+            rotateClockwise
+            pageLoad
+            sendJSON
+            */
+
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
-
 
 function fillFormWithTestData(nesw) {
     var holdings = [];
