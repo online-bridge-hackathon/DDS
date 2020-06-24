@@ -117,21 +117,19 @@ function rotateClockwise() {
 function collectHands() {
     var hands = {};
 
-    for (var direction of DIRECTIONS) {
-        for (var suit of SUITS) {
-            var direction_letter = direction.charAt(0).toUpperCase();
-            if (!hands[direction_letter]) {
-                hands[direction_letter] = [];
-            }
+    for (const ds of directions_and_suits()) {
+        var direction_letter = ds["direction"].charAt(0).toUpperCase();
+        if (!hands[direction_letter]) {
+            hands[direction_letter] = [];
+        }
 
-            var suit_letter = suit.charAt(0).toUpperCase();
-            var element_index = direction + "_" + suit;
-            var holding = document.getElementById(element_index).value;
+        var suit_letter = ds["suit"].charAt(0).toUpperCase();
+        var element_index = ds["direction"] + "_" + ds["suit"];
+        var holding = document.getElementById(element_index).value;
 
-            for (var card of holding) {
-                hands[direction_letter].push(suit_letter + card.toUpperCase());
-            }
-       }
+        for (var card of holding) {
+            hands[direction_letter].push(suit_letter + card.toUpperCase());
+        }
     }
 
     return hands;
