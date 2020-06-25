@@ -1,0 +1,4 @@
+flask:
+    SERVER_NAME: localhost:5000
+    DEBUG: true
+    ENV: development

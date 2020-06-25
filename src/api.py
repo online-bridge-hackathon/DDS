@@ -4,7 +4,27 @@ from flask_restful import Resource, Api
 
 from .dds import DDS
 
+import yaml
+
+# Configuration filename
+config_filename = "server.yaml"
+
 app = Flask(__name__)
+
+config = {}
+try:
+    with open(config_filename) as config_handle:
+        config = yaml.safe_load(config_handle)
+except (yaml.YAMLError) as err:
+    app.logger.critical(f"Unable to parse configuration {config_filename}: "
+                        f"{err}")
+    raise
+except Exception as err:
+    app.logger.warning(f"Unable to load configuration {config_filename}: "
+                       f"{err}")
+    app.logger.warning("Using the default configuration.")
+
+app.config.from_mapping(config.get('flask', {}))
 CORS(app)
 api = Api(app)
 
