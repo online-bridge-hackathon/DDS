@@ -4,6 +4,8 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
+// TODO: Add tests for the exported functions.
+
 // ESLint configuration
 // https://eslint.org/demo
 //     ECMA Version: 2015
@@ -27,6 +29,15 @@
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
+
+// TODO: Clean up our HTML rendering, perhaps using customer elements.
+//       See https://developers.google.com/web/fundamentals/web-components/customelements
+const SUIT_SYMBOLS = {
+    "S" : "&spades;",
+    "H" : "<span style='color: red'>&hearts;</span>",
+    "D" : "<span style='color: red'>&diams;</span>",
+    "C" : "&clubs;"
+};
 
 function fillFormWithTestData(nesw) {
     var holdings = [];
@@ -134,7 +145,8 @@ function collectHands() {
 }
 
 function inputIsValid(hands) {
-    // TODO Make sure no card is repeated.
+    var deck = [];
+    var duplicates = [];
 
     for (const direction in hands) {
         const hand = hands[direction];
@@ -145,10 +157,43 @@ function inputIsValid(hands) {
 
         for (const card of hand) {
             const pip = card.substring(1);
+
             if (!PIPS.includes(pip)) {
                 return "Please use only these pips: " + PIPS;
             }
+
+            if (deck[card]) {
+                if (deck[card] == 1) {
+                    duplicates.push(card);
+                }
+
+                deck[card]++;
+            } else {
+                deck[card] = 1;
+            }
         }
+    }
+
+    if (duplicates.length) {
+        var error_message = "Duplicated card";
+
+        if (duplicates.length > 1) {
+            error_message += "s";
+        }
+
+        error_message += ": ";
+
+        for (const card of duplicates) {
+            const suit_letter = card.substring(0, 1);
+            const pip = card.substring(1);
+            const suit_symbol = SUIT_SYMBOLS[suit_letter];
+
+            error_message += suit_symbol;
+            error_message += pip;
+            error_message += " ";
+        }
+
+        return error_message;
     }
 
     return "";
