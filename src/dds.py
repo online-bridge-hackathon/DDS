@@ -87,7 +87,7 @@ def encode_deal(hands):
 
 
 class DDS:
-    def __init__(self, max_threads=0):
+    def __init__(self, max_threads=0, max_memory=0):
         if platform.system() == "Windows":
             libname = "libdds.dll"
         elif platform.system() == "Darwin":
@@ -99,7 +99,8 @@ class DDS:
             libname = LIBDDSPATH + libname
 
         self.libdds = libloader.LoadLibrary(libname)
-        self.libdds.SetMaxThreads(max_threads)
+        if max_threads or max_memory:
+            self.libdds.SetResources(max_memory, max_threads)
 
     def solve_board(self, trump, first, current_trick, hands,
                     target=-1, solutions=3, mode=1, thread_index=0):

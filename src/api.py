@@ -9,13 +9,21 @@ import yaml
 # Configuration filename
 config_filename = "server.yaml"
 
+# Default for maximum threads is to let the library decide
+mt = 0
+# Default for maximum memory is to let the library decide
+mm = 0
+
 app = Flask(__name__)
 
 config = {}
 try:
     with open(config_filename) as config_handle:
         config = yaml.safe_load(config_handle)
-except (yaml.YAMLError) as err:
+        libdds_config = config.get('libdds', {})
+        mm = libdds_config.get('max_memory', mm)
+        mt = libdds_config.get('max_threads', mt)
+except (yaml.YAMLError, AttributeError) as err:
     app.logger.critical(f"Unable to parse configuration {config_filename}: "
                         f"{err}")
     raise
@@ -31,7 +39,7 @@ api = Api(app)
 # When SetMaxThreads is called there must not be any other threads calling
 # libdds. The easiest way to avoid parallel calls is to keep only one DDS
 # object as long as server runs.
-dds = DDS(max_threads=2)
+dds = DDS(max_threads=mt, max_memory=mm)
 
 
 class DDSTable(Resource):
