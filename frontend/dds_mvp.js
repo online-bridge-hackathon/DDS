@@ -33,7 +33,7 @@ const SUIT_SYMBOLS = {
     "H" : "<span style='color: red'>&hearts;</span>",
     "D" : "<span style='color: red'>&diams;</span>",
     "C" : "&clubs;"
-}
+};
 
 function fillFormWithTestData(nesw) {
     var holdings = [];
@@ -141,9 +141,8 @@ function collectHands() {
 }
 
 function inputIsValid(hands) {
-    // TODO Make sure no card is repeated.
-    
-    var deck = {}
+    var deck = [];
+    var duplicates = [];
 
     for (const direction in hands) {
         const hand = hands[direction];
@@ -153,22 +152,47 @@ function inputIsValid(hands) {
         }
 
         for (const card of hand) {
-            const suit_letter = card.substring(0, 1);
             const pip = card.substring(1);
+
             if (!PIPS.includes(pip)) {
                 return "Please use only these pips: " + PIPS;
             }
-            
+
             if (deck[card]) {
-                var suit_symbol = SUIT_SYMBOLS[suit_letter];
-                return "Duplicated card: " + suit_symbol + pip;
+                if (deck[card] == 1) {
+                    duplicates.push(card);
+                }
+
+                deck[card]++;
             } else {
                 deck[card] = 1;
             }
         }
     }
 
-    return "";
+    if (duplicates.length) {
+        var error_message = "Duplicated card";
+
+        if (duplicates.length > 1) {
+            error_message += "s";
+        }
+
+        error_message += ": ";
+
+        for (const card of duplicates) {
+            const suit_letter = card.substring(0, 1);
+            const pip = card.substring(1);
+            const suit_symbol = SUIT_SYMBOLS[suit_letter];
+
+            error_message += suit_symbol;
+            error_message += pip;
+            error_message += " ";
+        }
+
+        return error_message;
+    } else {
+        return "";
+    }
 }
 
 function pageLoad() {
