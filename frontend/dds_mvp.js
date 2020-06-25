@@ -4,6 +4,8 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
+// TODO: Add tests for the exported functions.
+
 // ESLint configuration
 // https://eslint.org/demo
 //     ECMA Version: 2015
@@ -28,6 +30,8 @@ const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
 
+// TODO: Clean up our HTML rendering, perhaps using customer elements.
+//       See https://developers.google.com/web/fundamentals/web-components/customelements
 const SUIT_SYMBOLS = {
     "S" : "&spades;",
     "H" : "<span style='color: red'>&hearts;</span>",
@@ -190,9 +194,9 @@ function inputIsValid(hands) {
         }
 
         return error_message;
-    } else {
-        return "";
     }
+
+    return "";
 }
 
 function pageLoad() {
