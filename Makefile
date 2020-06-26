@@ -16,12 +16,12 @@ release: build push
 
 .git/refs/remotes/${LIBDDS_REMOTE}/master:
 	git remote add ${LIBDDS_REMOTE} ${LIBDDS_REPO}
-	git fetch ${LIBDDS_REMOTE}
+	git fetch --no-tags ${LIBDDS_REMOTE}
 
 build: .git/refs/remotes/${LIBDDS_REMOTE}/master
-	git fetch ${LIBDDS_REMOTE}
+	git fetch --no-tags ${LIBDDS_REMOTE}
 	docker build -t ${DOCKER_TAG} \
-		--build-arg CACHEBUST=$(shell git describe ${LIBDDS_REMOTE}/master) \
+		--build-arg CACHEBUST=$(shell git describe --always ${LIBDDS_REMOTE}/master) \
 		.
 
 push:
