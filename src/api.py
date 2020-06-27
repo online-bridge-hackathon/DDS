@@ -8,6 +8,10 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+# When SetMaxThreads is called there must not be any other threads calling
+# libdds. The easiest way to avoid parallel calls is to keep only one DDS object
+# as long as server runs.
+dds = DDS(max_threads=2)
 
 class DDSTable(Resource):
     def get(self):
@@ -18,7 +22,6 @@ class DDSTable(Resource):
         data = request.get_json()
         # Verify the data here
         # self.verifyinput(data)
-        dds = DDS(max_threads=2)
         dds_table = dds.calc_dd_table(data['hands'])
         return dds_table
 
