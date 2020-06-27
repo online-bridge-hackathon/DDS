@@ -79,6 +79,8 @@ class DDS:
     def __init__(self, max_threads=0):
         if platform.system() == "Windows":
             libname = "libdds.dll"
+        elif platform.system() == "Darwin":
+            libname = "libdds.2.dylib"
         else:
             libname = "libdds.so.2"
         self.libdds = libloader.LoadLibrary(libname)
