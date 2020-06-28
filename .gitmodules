@@ -1,0 +1,4 @@
+[submodule "libdds"]
+	path = libdds
+	url = ../../online-bridge-hackathon/libdds
+	branch = master
