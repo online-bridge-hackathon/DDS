@@ -1,6 +1,5 @@
 __pycache__/
 *.pyc
 *.log
-*DS*Store*
-
+.DS_Store
 src/dump.txt
