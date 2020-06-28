@@ -92,3 +92,13 @@ def run_in_threads(num_threads, target, args):
     for thread_return in results:
         for item in thread_return:
             yield item
+
+def check_DD_table_results(test, results, expected):
+    for result in results:
+        for denomination in ['C', 'D', 'H', 'S', 'N']:
+            for declarer in ['N', 'S', 'E', 'W']:
+                test.assertEqual(expected[denomination][declarer],
+                        result[denomination][declarer],
+                        declarer + ' should make ' + \
+                                str(expected[denomination][declarer]) + ' in ' + \
+                                denomination);

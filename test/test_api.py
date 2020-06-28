@@ -19,6 +19,7 @@ from api import app
 
 from test.utilities import string_to_hand
 from test.utilities import run_in_threads
+from test.utilities import check_DD_table_results
 
 class TestAPI(unittest.TestCase):
     """
@@ -58,20 +59,11 @@ class TestAPI(unittest.TestCase):
             for i in range(2):
                 response = self.service.post('/api/dds-table/', json=deal)
                 self.assertEqual(response.status_code, 200)
-                yield response
+                yield json.loads(response.data)
 
         solutions = run_in_threads(2, test_fn, args=(self, deal))
 
-        for solution in solutions:
-            for denomination in ['C', 'D', 'H', 'S', 'N']:
-                for declarer in ['N', 'S', 'E', 'W']:
-                    data = json.loads(solution.data);
-                    self.assertEqual(result[denomination][declarer],
-                            data[denomination][declarer],
-                            declarer + ' should make ' + \
-                                    str(result[denomination][declarer]) + ' in ' + \
-                                    denomination);
-
+        check_DD_table_results(self, solutions, result)
 
 if __name__ == '__main__':
     unittest.main()
