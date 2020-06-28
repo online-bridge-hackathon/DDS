@@ -18,6 +18,7 @@ sys.path.append('src')
 from api import app
 
 from test.utilities import string_to_hand
+from test.utilities import run_in_threads
 
 class TestAPI(unittest.TestCase):
     """
@@ -53,18 +54,13 @@ class TestAPI(unittest.TestCase):
             N = dict(N = 13, E = 0, S = 13, W = 0)
         )
 
-        def test_fn(self, deal, solutions):
+        def test_fn(self, deal):
             for i in range(2):
-                solutions.append(self.service.post('/api/dds-table/', json=deal))
+                response = self.service.post('/api/dds-table/', json=deal)
+                self.assertEqual(response.status_code, 200)
+                yield response
 
-        solutions = []
-        solutions2 = []
-
-        t2 = threading.Thread(target=test_fn, args=(self, deal, solutions2))
-        t2.start()
-        test_fn(self, deal, solutions)
-        t2.join()
-        solutions.extend(solutions2)
+        solutions = run_in_threads(2, test_fn, args=(self, deal))
 
         for solution in solutions:
             for denomination in ['C', 'D', 'H', 'S', 'N']:
