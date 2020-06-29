@@ -214,12 +214,11 @@ function sendJSON() {
     }
     
     var xhr = new XMLHttpRequest();
-    const URL = "http://localhost:5000/api/dds-table/";
-
-    // This fails as of 2020-06-21 due to:
-    // Access from origin 'null' has been blocked by CORS policy
-    // That's because an older version of our service is deployed.
-    // const URL = "https://dds.hackathon.globalbridge.app/api/dds-table/";
+    
+    // For testing backend changes locally
+    // const URL = "http://localhost:5000/api/dds-table/";
+    
+    const URL = "https://dds.globalbridge.app/api/dds-table/";
 
     xhr.open("POST", URL, true);
 
