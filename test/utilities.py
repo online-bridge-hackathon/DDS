@@ -8,6 +8,8 @@
 #       its test deals. Those are easier to enter but a little more difficult
 #       to read.
 
+from threading import Thread
+
 SUIT_SYMBOLS = ["S", "H", "D", "C"]
 
 def string_to_hand(hand_string):
@@ -62,3 +64,41 @@ def rotate_nesw_to_eswn(nesw):
     for index in range(4):
         eswn.append(nesw[(index + 1) %4])
     return eswn
+
+def run_in_threads(num_threads, target, args):
+    """
+    Helper to run a test using multiple threads with a simulated return value
+    """
+    results = []
+    threads = []
+    # Wrapper to allow thread functions to return or yield their return values
+    def thread_fn(target, args, result):
+        for r in target(*args):
+            result.append(r)
+    for i in range(num_threads):
+        # Reserve a thread local return value
+        results.append([])
+        thread_arguments = (target, args, results[i])
+        # Create and start threads
+        threads.append(Thread(target=thread_fn, args=thread_arguments))
+        threads[i].start()
+
+
+    for t in threads:
+        # Wait for thread exit
+        t.join()
+
+    # collapse results to a single list
+    for thread_return in results:
+        for item in thread_return:
+            yield item
+
+def check_DD_table_results(test, results, expected):
+    for result in results:
+        for denomination in ['C', 'D', 'H', 'S', 'N']:
+            for declarer in ['N', 'S', 'E', 'W']:
+                test.assertEqual(expected[denomination][declarer],
+                        result[denomination][declarer],
+                        declarer + ' should make ' + \
+                                str(expected[denomination][declarer]) + ' in ' + \
+                                denomination);
