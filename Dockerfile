@@ -1,28 +1,39 @@
-FROM debian:stretch as dds-builder
+FROM debian:buster as dds-builder
 
 RUN apt-get update
-RUN apt-get install -y \
+# Install only minimum required packages
+RUN apt-get install -y --no-install-recommends \
+  ca-certificates \
+  cmake \
   git \
-  build-essential \
-  libboost-thread-dev
+  g++ \
+  ninja-build
 
-RUN mkdir -p /app
+RUN git clone https://github.com/suokko/dds /app
+RUN mkdir -p /app/.build
 
-RUN git clone https://github.com/df7cb/dds /app && \
-  cd /app && \
-  git checkout linux-memory
+WORKDIR /app/.build
 
-WORKDIR /app/src
+# Make sure sources are the latest for the build operation
+ARG CACHEBUST=1
+RUN git pull origin && \
+# Configure using RelWithDebInfo. This will help if system is setup to generate
+# a core file in case of crash. Installation prefix is /usr. It uses Ninja
+# generator which has better cmake generator than recursive Makefiles.
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -G Ninja \
+      .. && \
+# Compile the library
+    ninja && \
+# Install only runtime files into /app/.build/install
+# (Required step because it can modify RUNPATH)
+    env DESTDIR=install cmake -DCMAKE_INSTALL_COMPONENT=Runtime -P cmake_install.cmake
 
-RUN cp ./Makefiles/Makefile_linux_shared ./Makefile
-RUN make clean && make
+FROM python:3.7-buster
 
-FROM python:3.7-stretch
-
-RUN apt-get update
-RUN apt-get install -y libboost-thread-dev
-
-COPY --from=dds-builder /app/src/libdds.so /usr/lib/
+# Copy installed runtime files to real image
+COPY --from=dds-builder /app/.build/install/usr/lib /usr/lib
 
 RUN mkdir -p /app
 WORKDIR /app

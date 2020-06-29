@@ -4,26 +4,52 @@
 //   license that can be found in the LICENSE file or at
 //   https://opensource.org/licenses/MIT
 
+// TODO: Add tests for the exported functions.
+
+// ESLint configuration
+// https://eslint.org/demo
+//     ECMA Version: 2015
+//     Environment: browser
+
+/* eslint-env es6 */
+/* exported fillFormWithGrandSlamTestData
+            fillFormWithEveryoneMakes3nTestData
+            fillFormWithPartScoreTestData
+            clearTestData
+            rotateClockwise
+            pageLoad
+            sendJSON
+            */
+
+// It's also useful to pass the code through
+// https://jshint.com/ and https://jslint.com/
+
 "use strict";
 
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
+const PIPS = "AKQJT98765432";
 
+// TODO: Clean up our HTML rendering, perhaps using customer elements.
+//       See https://developers.google.com/web/fundamentals/web-components/customelements
+const SUIT_SYMBOLS = {
+    "S" : "&spades;",
+    "H" : "<span style='color: red'>&hearts;</span>",
+    "D" : "<span style='color: red'>&diams;</span>",
+    "C" : "&clubs;"
+};
 
 function fillFormWithTestData(nesw) {
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var hand = nesw[direction_index];
-        var direction = DIRECTIONS[direction_index];
+    var holdings = [];
 
-        var holdings = hand.split(".");
-
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var holding = holdings[suit_index];
-            var element_index = direction + "_" + suit;
-            var element = document.getElementById(element_index);
-            element.value = holding;
+    for (const hand of nesw) {
+        for (const holding of hand.split(".")) {
+            holdings.push(holding);
         }
+    }
+
+    for (const element of hand_elements()) {
+        element.value = holdings.shift();
     }
 }
 
@@ -54,76 +80,144 @@ function fillFormWithPartScoreTestData() {
     ]);
 }
 
-function clearTestData() {
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var direction = DIRECTIONS[direction_index];
+function * directions_and_suits() {
+    // Generator
 
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = direction + "_" + suit;
-            var element = document.getElementById(element_index);
-            element.value = "";
+    for (const direction of DIRECTIONS) {
+        for (const suit of SUITS) {
+            yield { "direction": direction, "suit": suit };
         }
     }
 }
 
+function * hand_elements() {
+    // Generator
+
+    for (const ds of directions_and_suits()) {
+        var element_index = ds.direction + "_" + ds.suit;
+        var element = document.getElementById(element_index);
+        yield element;
+    }
+}
+
+function clearTestData() {
+    for (const element of hand_elements()) {
+        element.value = "";
+    }
+}
+
 function rotateClockwise() {
-    var old_hands = [];
+    var hands = [];
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var old_direction = DIRECTIONS[direction_index];
-        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
-
-        old_hands.push([]);
-
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = old_direction + "_" + suit;
-            var old_element = document.getElementById(element_index);
-            var old_value = old_element.value;
-            old_hands[direction_index].push(old_value);
-        }
+    for (const element of hand_elements()) {
+        hands.push(element.value);
     }
 
-    for (var direction_index = 0; direction_index < 4; direction_index++ ) {
-        var new_direction = DIRECTIONS[(direction_index + 1) % 4];
+    // rotate west to north, and so on
+    for (var i = 0; i < 4; i++) {
+        var west = hands.pop();
+        hands.unshift(west);
+    }
 
-        for (var suit_index = 0; suit_index < 4; suit_index++) {
-            var suit = SUITS[suit_index];
-            var element_index = new_direction + "_" + suit;
-            var new_element = document.getElementById(element_index);
-            new_element.value = old_hands[direction_index][suit_index];
-        }
+    for (const element of hand_elements()) {
+        element.value = hands.shift();
     }
 }
 
 function collectHands() {
     var hands = {};
 
-    for (var direction of DIRECTIONS) {
-        var direction_letter = direction.charAt(0).toUpperCase();
-        hands[direction_letter] = [];
+    for (const ds of directions_and_suits()) {
+        var direction_letter = ds.direction.charAt(0).toUpperCase();
 
-        for (var suit of SUITS) {
-            var suit_letter = suit.charAt(0).toUpperCase();
-            var element_index = direction + "_" + suit;
-            var holding = document.getElementById(element_index).value;
+        hands[direction_letter] = hands[direction_letter] || [];
 
-            for (var card of holding) {
-                hands[direction_letter].push(suit_letter + card.toUpperCase());
-            }
-       }
+        var suit_letter = ds.suit.charAt(0).toUpperCase();
+        var element_index = ds.direction + "_" + ds.suit;
+        var holding = document.getElementById(element_index).value;
+
+        for (const card of holding) {
+            hands[direction_letter].push(suit_letter + card.toUpperCase());
+        }
     }
 
     return hands;
 }
 
-function sendJSON(){
+function inputIsValid(hands) {
+    var deck = [];
+    var duplicates = [];
+
+    for (const direction in hands) {
+        const hand = hands[direction];
+
+        if (hand.length != 13) {
+            return "Please enter 13 cards per hand.";
+        }
+
+        for (const card of hand) {
+            const pip = card.substring(1);
+
+            if (!PIPS.includes(pip)) {
+                return "Please use only these pips: " + PIPS;
+            }
+
+            if (deck[card]) {
+                if (deck[card] == 1) {
+                    duplicates.push(card);
+                }
+
+                deck[card]++;
+            } else {
+                deck[card] = 1;
+            }
+        }
+    }
+
+    if (duplicates.length) {
+        var error_message = "Duplicated card";
+
+        if (duplicates.length > 1) {
+            error_message += "s";
+        }
+
+        error_message += ": ";
+
+        for (const card of duplicates) {
+            const suit_letter = card.substring(0, 1);
+            const pip = card.substring(1);
+            const suit_symbol = SUIT_SYMBOLS[suit_letter];
+
+            error_message += suit_symbol;
+            error_message += pip;
+            error_message += " ";
+        }
+
+        return error_message;
+    }
+
+    return "";
+}
+
+function pageLoad() {
+    document.getElementById("valid-pips").innerHTML = PIPS;
+}
+
+function sendJSON() {
+    var hands = collectHands();
+
+    const error_message = inputIsValid(hands);
+
+    if (error_message.length) {
+        document.getElementById("result").innerHTML = error_message;
+        return;
+    }
+    
     var xhr = new XMLHttpRequest();
     
     // For testing backend changes locally
     // const URL = "http://localhost:5000/api/dds-table/";
-
+    
     const URL = "https://dds.globalbridge.app/api/dds-table/";
 
     xhr.open("POST", URL, true);
@@ -136,7 +230,7 @@ function sendJSON(){
         }
     };
 
-    var hands = collectHands();
+    document.getElementById("result").innerHTML = "";
     var deal = { "hands": hands };
     var data = JSON.stringify(deal);
     xhr.send(data);

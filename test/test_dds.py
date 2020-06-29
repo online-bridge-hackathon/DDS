@@ -27,11 +27,11 @@ class TestDDS(unittest.TestCase):
             Tweak input by exchanging an A and a K, make sure output changes to match.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        # Cannot use setUp() because we are only able to instantiate DDS once.
-        # This is likely a bug in DDS…
-        cls.dds = DDS()
+    def setUp(self):
+        # We do this here rather than in setUpClass() in order to test
+        # multiple serial instantiations of DDS. At one point DDS had
+        # a bug that caused it to crash when we did this.
+        self.dds = DDS()
 
     def test_one_sample_deal(self):
         """
