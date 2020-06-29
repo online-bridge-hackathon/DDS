@@ -9,6 +9,7 @@
 # python3 -m unittest discover
 
 import unittest
+import threading
 
 from test.utilities import nesw_to_dds_format
 from test.utilities import rotate_nesw_to_eswn
@@ -188,6 +189,55 @@ class TestDDS(unittest.TestCase):
 
         self.assertEqual(0, dds_table['S']['N'], 'South can take no tricks at notrump')
         self.assertEqual(1, dds_table['S']['N'], 'South can take one tricks at diamonds')
+
+    def test_parallel_CalcDDTable(self):
+        """
+        Tests parallel access to calcDDTable. Cards are from libdds/hands/list100.txt
+
+        PBN 0 0 4 2 "N:T742.QT6.AJ7.Q64 AQ83.A54.KQ9.T82 K65.J873.653.A97 J9.K92.T842.KJ53"
+        FUT 10 3 2 2 1 1 1 3 3 0 0 14 3 6 3 8 11 7 9 6 13 0 0 32 0 128 0 0 0 32 0 5 5 5 5 5 5 5 5 4 4
+        TABLE 5 8 5 8  6 7 6 7  4 8 4 8  4 8 4 8  5 8 5 8
+        """
+
+        nesw = [
+            "T742.QT6.AJ7.Q64",
+            "AQ83.A54.KQ9.T82",
+            "K65.J873.653.A97",
+            "J9.K92.T842.KJ53"
+        ]
+
+        result = dict(
+            S = dict(N = 5, E = 8, S = 5, W = 8),
+            H = dict(N = 6, E = 7, S = 6, W = 7),
+            D = dict(N = 4, E = 8, S = 4, W = 8),
+            C = dict(N = 4, E = 8, S = 4, W = 8),
+            N = dict(N = 5, E = 8, S = 5, W = 8)
+        )
+
+        deal = nesw_to_dds_format(nesw)
+
+        def test_fn(self, deal, solutions):
+            for i in range(2):
+                solutions.append(self.dds.calc_dd_table(deal))
+
+        solutions = []
+        solutions2 = []
+
+        t2 = threading.Thread(target=test_fn, args=(self, deal, solutions2))
+        t2.start()
+        test_fn(self, deal, solutions)
+        t2.join()
+        solutions.extend(solutions2)
+
+        for solution in solutions:
+            for denomination in ['C', 'D', 'H', 'S', 'N']:
+                for declarer in ['N', 'S', 'E', 'W']:
+                    self.assertEqual(result[denomination][declarer],
+                            solution[denomination][declarer],
+                            declarer + ' should make ' + \
+                                    str(result[denomination][declarer]) + ' in ' + \
+                                    denomination);
+
 
 if __name__ == '__main__':
     unittest.main()
