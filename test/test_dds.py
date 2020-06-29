@@ -13,6 +13,8 @@ import threading
 
 from test.utilities import nesw_to_dds_format
 from test.utilities import rotate_nesw_to_eswn
+from test.utilities import run_in_threads
+from test.utilities import check_DD_table_results
 
 from src.dds import DDS
 
@@ -216,27 +218,13 @@ class TestDDS(unittest.TestCase):
 
         deal = nesw_to_dds_format(nesw)
 
-        def test_fn(self, deal, solutions):
+        def test_fn(self, deal):
             for i in range(2):
-                solutions.append(self.dds.calc_dd_table(deal))
+                yield self.dds.calc_dd_table(deal)
 
-        solutions = []
-        solutions2 = []
+        solutions = run_in_threads(2, test_fn, args=(self, deal))
 
-        t2 = threading.Thread(target=test_fn, args=(self, deal, solutions2))
-        t2.start()
-        test_fn(self, deal, solutions)
-        t2.join()
-        solutions.extend(solutions2)
-
-        for solution in solutions:
-            for denomination in ['C', 'D', 'H', 'S', 'N']:
-                for declarer in ['N', 'S', 'E', 'W']:
-                    self.assertEqual(result[denomination][declarer],
-                            solution[denomination][declarer],
-                            declarer + ' should make ' + \
-                                    str(result[denomination][declarer]) + ' in ' + \
-                                    denomination);
+        check_DD_table_results(self, solutions, result)
 
 
 if __name__ == '__main__':
