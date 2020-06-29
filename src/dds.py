@@ -2,6 +2,7 @@
 
 from ctypes import Structure, c_int, pointer
 import platform
+import os
 
 if platform.system() == "Windows":
     from ctypes import windll as libloader
@@ -13,6 +14,7 @@ SUITS = "SHDC"
 STRAINS = SUITS + "N"
 RANKS = "??23456789TJQKA"
 MAXNOOFBOARDS = 200
+LIBDDSPATH = "libdds/.build/src/"
 
 class Deal(Structure):
     _fields_ = [
@@ -83,6 +85,10 @@ class DDS:
             libname = "libdds.2.dylib"
         else:
             libname = "libdds.so.2"
+
+        if os.path.exists(LIBDDSPATH + libname):
+            libname = LIBDDSPATH + libname
+
         self.libdds = libloader.LoadLibrary(libname)
         self.libdds.SetMaxThreads(max_threads)
 
