@@ -9,19 +9,14 @@ GCP_PROJECT ?= online-bridge-hackathon-2020
 GKE_CLUSTER_NAME ?= hackathon-cluster
 GKE_ZONE ?= europe-west3-b
 
-LIBDDS_REMOTE ?= libdds_for_cachebust
-LIBDDS_REPO ?= https://github.com/suokko/dds
-
 release: build push
 
-.git/refs/remotes/${LIBDDS_REMOTE}/master:
-	git remote add ${LIBDDS_REMOTE} ${LIBDDS_REPO}
-	git fetch ${LIBDDS_REMOTE}
+libdds/.git:
+	git submodule update --init
 
-build: .git/refs/remotes/${LIBDDS_REMOTE}/master
-	git fetch ${LIBDDS_REMOTE}
+build: libdds/.git
 	docker build -t ${DOCKER_TAG} \
-		--build-arg CACHEBUST=$(shell git describe ${LIBDDS_REMOTE}/master) \
+		--build-arg CACHEBUST=$(shell git --git-dir=libdds/.git describe) \
 		.
 
 push:

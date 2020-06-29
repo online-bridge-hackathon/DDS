@@ -9,18 +9,19 @@ RUN apt-get install -y --no-install-recommends \
   g++ \
   ninja-build
 
-RUN git clone https://github.com/suokko/dds /app
-RUN mkdir -p /app/.build
+# Make sure sources are the latest for the build operation
+ARG CACHEBUST=1
+ADD libdds /app
+
+RUN rm -rf /app/.build && \
+  mkdir -p /app/.build
 
 WORKDIR /app/.build
 
-# Make sure sources are the latest for the build operation
-ARG CACHEBUST=1
-RUN git pull origin && \
 # Configure using RelWithDebInfo. This will help if system is setup to generate
 # a core file in case of crash. Installation prefix is /usr. It uses Ninja
 # generator which has better cmake generator than recursive Makefiles.
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -G Ninja \
       .. && \
