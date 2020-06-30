@@ -15,8 +15,8 @@ This repository contains the hackathon's fork of Bo Haglund's double-dummy solve
 gcloud config set project online-bridge-hackathon-2020
 mkdir ~/bridge-hackathon/
 cd ~/bridge-hackathon/
-git clone https://github.com/suokko/dds.git
-cd dds/
+git clone https://github.com/online-bridge-hackathon/libdds.git
+cd libdds/
 mkdir .build
 cd .build/
 # Build with debugging symbols. Inexpensive and sometimes useful.
@@ -24,7 +24,7 @@ cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 make
 ```
 
-Optional, to make sure the library built correctly.
+Optional, to be sure the library built correctly.
 It will take about six minutes to complete.
 ```
 make check
