@@ -32,7 +32,8 @@ class TestAPI(unittest.TestCase):
 
     def test_parallel_post(self):
         """
-        Tests parallel access to calcDDTable. Cards are from libdds/hands/list100.txt
+        Tests parallel DDSTable post handlers.
+        Cards are from libdds/hands/list100.txt
         PBN 0 2 0 3 "N:KT.6.AKQ64.A7654 Q53.KT9874.T2.Q2 AJ876.A2.953.KJT 942.QJ53.J87.983"
         FUT 10 1 1 1 0 0 2 2 0 3 3 3 5 12 2 4 8 11 9 3 9 0 0 2048 0 0 128 0 0 0 256 0 0 0 0 0 0 0 0 0 0
         TABLE 13 0 13 0 8 5 8 5 13 0 13 0 13 0 13 0 13 0 13 0

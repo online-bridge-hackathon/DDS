@@ -4,6 +4,13 @@ DOCKER_TAG=${DOCKER_REPO}/dds-api:${VERSION}
 
 EXTERNAL_ADDRES ?= dds.hackathon.globalbridge.app
 
+ifeq (${SILENT},1)
+	VERBOSE_TEST :=
+else
+	VERBOSE_TEST := -v
+endif
+
+
 DDS_K8S_NS ?= dds-api
 GCP_PROJECT ?= online-bridge-hackathon-2020
 GKE_CLUSTER_NAME ?= hackathon-cluster
@@ -39,4 +46,4 @@ ensure_ns:
 	kubectl create ns ${DDS_K8S_NS} || :
 
 run_local_tests:
-	python3 -m unittest discover
+	python3 -m unittest discover ${VERBOSE_TEST}
