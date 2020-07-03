@@ -3,3 +3,5 @@ __pycache__/
 *.log
 .DS_Store
 src/dump.txt
+.idea/
+venv/
