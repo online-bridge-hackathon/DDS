@@ -56,8 +56,8 @@ make run_local_tests
 
 ```
 pip3 install -r requirements.txt
-cd ~/bridge-hackathon/DDS/src
-python3 api.py
+cd ~/bridge-hackathon/DDS/
+python3 -m src.api
 ```
 
 # Test your local service manually

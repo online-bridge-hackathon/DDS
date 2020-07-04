@@ -9,13 +9,9 @@
 # python3 -m unittest discover
 
 import unittest
-import sys
 import json
 
-# import dds in api.py requires appending path manually
-sys.path.append('src')
-
-from api import app
+from src.api import app
 
 from test.utilities import string_to_hand
 from test.utilities import run_in_threads
