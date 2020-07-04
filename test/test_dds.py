@@ -11,10 +11,10 @@
 import unittest
 import threading
 
-from .utilities import nesw_to_dds_format
-from .utilities import rotate_nesw_to_eswn
-from .utilities import run_in_threads
-from .utilities import check_DD_table_results
+from test.utilities import nesw_to_dds_format
+from test.utilities import rotate_nesw_to_eswn
+from test.utilities import run_in_threads
+from test.utilities import check_DD_table_results
 
 from src.dds import DDS
 
