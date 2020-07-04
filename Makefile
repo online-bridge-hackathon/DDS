@@ -16,12 +16,26 @@ GCP_PROJECT ?= online-bridge-hackathon-2020
 GKE_CLUSTER_NAME ?= hackathon-cluster
 GKE_ZONE ?= europe-west3-b
 
+LIBDDS_BUILD_DIR := libdds/.build
+
 release: build push
 
-libdds/.git:
-	git submodule update --init
+# Make sure submodules have been initialized and libdds has latest code
+libdds/.git libdds-update:
+	git submodule update --init --rebase
 
-build: libdds/.git
+# Configure libdds build
+# Dependency makes sure submodules have been initialized
+${LIBDDS_BUILD_DIR}/CMakeCache.txt: libdds/.git
+	mkdir -p ${LIBDDS_BUILD_DIR}
+	cd ${LIBDDS_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+# Build libdds
+# Dependencies makes sure that configure has been run and code is the latest one
+libdds-build: ${LIBDDS_BUILD_DIR}/CMakeCache.txt libdds-update
+	+make -C ${LIBDDS_BUILD_DIR}
+
+build: libdds-update
 	docker build -t ${DOCKER_TAG} \
 		--build-arg CACHEBUST=$(shell git --git-dir=libdds/.git describe) \
 		.
@@ -45,5 +59,5 @@ set_gcp_context:
 ensure_ns:
 	kubectl create ns ${DDS_K8S_NS} || :
 
-run_local_tests:
+run_local_tests: libdds-build
 	python3 -m unittest discover ${VERBOSE_TEST}
