@@ -7,39 +7,6 @@ For overall project info please see [README.md](https://github.com/online-bridge
 Using your favorite web browser, open a cloud shell terminal at <https://ssh.cloud.google.com/cloudshell>.
 You'll need a free Google account. These days, most people have one already.
 
-# Build and install the C++ library
-
-This repository contains the hackathon's fork of Bo Haglund's double-dummy solver code.
-
-```
-gcloud config set project online-bridge-hackathon-2020
-mkdir ~/bridge-hackathon/
-cd ~/bridge-hackathon/
-git clone https://github.com/online-bridge-hackathon/libdds.git
-cd libdds/
-mkdir .build
-cd .build/
-# Build with debugging symbols. Inexpensive and sometimes useful.
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-make
-```
-
-Optional, to be sure the library built correctly.
-It will take about six minutes to complete.
-```
-make check
-```
-
-Install the library where Python can find it:
-```
-sudo cmake -DCMAKE_INSTALL_COMPONENT=Runtime -DCMAKE_INSTALL_PREFIX=/usr -P cmake_install.cmake
-```
-
-The cloud shell clears out /usr/lib/ every so often, so add the install command to your *.bashrc* file:
-```
-cd $HOME/bridge-hackathon/dds/.build/ && sudo cmake -DCMAKE_INSTALL_COMPONENT=Runtime -DCMAKE_INSTALL_PREFIX=/usr -P cmake_install.cmake
-```
-
 # Build and test the DDS webservice wrapper for the double-dummy solver library
 
 Note that the C++ project is named **dds** and the webservice project is named **DDS**. Yes, this could be confusing - we plan to rename one or both.
@@ -55,8 +22,9 @@ make run_local_tests
 
 
 ```
-pip3 install -r requirements.txt
 cd ~/bridge-hackathon/DDS/
+pip3 install -r requirements.txt
+make libdds-build
 python3 -m src.api
 ```
 
