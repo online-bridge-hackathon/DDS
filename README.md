@@ -8,16 +8,18 @@ Uses Bo Hagland's solver https://github.com/dds-bridge/dds -- requires the libdd
 Credit to Alexis Rimbaud of NukkAI for the python dds wrapper.
 
 
-# Build and install libdds library for local testing
+# Build the C++ library for local testing
 
 ```
 make libdds-build
-cd libdds/.build
 ```
 
 The python loader looks for the library from libdds/.build/src. If the file is
 found from build directory then the found library is preferred before a library
 in a system directory.
+
+If you want to change the C++ library's build configuration,
+[README.libdds.md](README.libdds.md) provides information about the process.
 
 # Install a local server using Flask, then test it manually:
 
