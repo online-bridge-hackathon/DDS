@@ -9,24 +9,23 @@
 # python3 -m unittest discover
 
 import unittest
-import threading
 
 from test.utilities import nesw_to_dds_format
 from test.utilities import rotate_nesw_to_eswn
 from test.utilities import run_in_threads
-from test.utilities import check_DD_table_results
+from test.utilities import check_dd_table_results
 
 from src.dds import DDS
 
-# So we can use multi-line strongs as comments:
+# So we can use multi-line strings as comments:
 # pylint: disable=pointless-string-statement
+
 
 class TestDDS(unittest.TestCase):
     """
     Tests DDS output for a few specific deals.
 
     TODO:   Test for different values of max_threads.
-            Test for invalid input, e.g. too many cards, too few, duplicated card.
             Tweak input by exchanging an A and a K, make sure output changes to match.
     """
 
@@ -66,8 +65,10 @@ class TestDDS(unittest.TestCase):
 
         dds_table = self.dds.calc_dd_table(hands)
 
-        self.assertEqual(8, dds_table['C']['S'], 'South can take 8 tricks with clubs as trump')
-        self.assertEqual(6, dds_table['N']['E'], 'East can take 6 tricks at notrump')
+        self.assertEqual(8, dds_table['C']['S'],
+                         'South can take 8 tricks with clubs as trump')
+        self.assertEqual(6, dds_table['N']['E'],
+                         'East can take 6 tricks at notrump')
 
     def test_ns_make_7_of_everything(self):
         """
@@ -161,7 +162,7 @@ class TestDDS(unittest.TestCase):
 
     def skip_test_one_trick_deal(self):
         """
-        This test fails. Presumably we have not yet implemented deals of
+        This test fails. We have not yet implemented deals of
         fewer than 52 cards.
 
             S A
@@ -191,8 +192,10 @@ class TestDDS(unittest.TestCase):
 
         dds_table = self.dds.calc_dd_table(hands)
 
-        self.assertEqual(0, dds_table['S']['N'], 'South can take no tricks at notrump')
-        self.assertEqual(1, dds_table['S']['N'], 'South can take one tricks at diamonds')
+        self.assertEqual(0, dds_table['S']['N'],
+                         'South can take no tricks at notrump')
+        self.assertEqual(1, dds_table['S']['N'],
+                         'South can take one tricks at diamonds')
 
     def test_parallel_CalcDDTable(self):
         """
@@ -212,11 +215,11 @@ class TestDDS(unittest.TestCase):
         ]
 
         result = dict(
-            S = dict(N = 5, E = 8, S = 5, W = 8),
-            H = dict(N = 6, E = 7, S = 6, W = 7),
-            D = dict(N = 4, E = 8, S = 4, W = 8),
-            C = dict(N = 4, E = 8, S = 4, W = 8),
-            N = dict(N = 5, E = 8, S = 5, W = 8)
+            S=dict(N=5, E=8, S=5, W=8),
+            H=dict(N=6, E=7, S=6, W=7),
+            D=dict(N=4, E=8, S=4, W=8),
+            C=dict(N=4, E=8, S=4, W=8),
+            N=dict(N=5, E=8, S=5, W=8)
         )
 
         deal = nesw_to_dds_format(nesw)
@@ -227,7 +230,7 @@ class TestDDS(unittest.TestCase):
 
         solutions = run_in_threads(2, test_fn, args=(self, deal))
 
-        check_DD_table_results(self, solutions, result)
+        check_dd_table_results(self, solutions, result)
 
 
 if __name__ == '__main__':

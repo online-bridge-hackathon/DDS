@@ -16,6 +16,7 @@ RANKS = "??23456789TJQKA"
 MAXNOOFBOARDS = 200
 LIBDDSPATH = "libdds/.build/src/"
 
+
 class Deal(Structure):
     _fields_ = [
         ("trump", c_int),
@@ -24,6 +25,7 @@ class Deal(Structure):
         ("current_trick_rank", c_int * 3),
         ("remain_cards", (c_int * 4) * 4)
     ]
+
 
 class FutureTricks(Structure):
     _fields_ = [
@@ -35,15 +37,18 @@ class FutureTricks(Structure):
         ("score", c_int * 13)
     ]
 
-class DDtable_deal(Structure):
+
+class DDTableDeal(Structure):
     _fields_ = [
         ("cards", (c_int * 4) * 4)
     ]
+
 
 class DDTableResults(Structure):
     _fields_ = [
         ("resTable", (c_int * 4) * 5)
     ]
+
 
 class Boards(Structure):
     _fields_ = [
@@ -54,11 +59,13 @@ class Boards(Structure):
         ("mode", c_int * MAXNOOFBOARDS)
     ]
 
+
 class SolvedBoards(Structure):
     _fields_ = [
         ("noOfBoards", c_int),
         ("solvedBoard", FutureTricks * MAXNOOFBOARDS)
     ]
+
 
 class DDSError(Exception):
     def __init__(self, code):
@@ -68,6 +75,7 @@ class DDSError(Exception):
         # This is Python 3.6 string interpolation syntax.
         return f"Error code {self.code}"
 
+
 def encode_deal(hands):
     cards = ((c_int * 4) * 4)()
     for i, direction in enumerate(DIRECTIONS):
@@ -76,6 +84,7 @@ def encode_deal(hands):
             rank = RANKS.index(card[1])
             cards[i][suit] |= 1 << rank
     return cards
+
 
 class DDS:
     def __init__(self, max_threads=0):
@@ -104,10 +113,12 @@ class DDS:
             current_trick_rank[i] = RANKS.index(card[1])
 
         remain_cards = encode_deal(hands)
-        dl = Deal(trump, first, current_trick_suit, current_trick_rank, remain_cards)
+        dl = Deal(trump, first, current_trick_suit, current_trick_rank,
+                  remain_cards)
         fut = FutureTricks()
 
-        code = self.libdds.SolveBoard(dl, target, solutions, mode, pointer(fut), thread_index)
+        code = self.libdds.SolveBoard(dl, target, solutions, mode,
+                                      pointer(fut), thread_index)
         if code != 1:
             raise DDSError(code)
 
@@ -120,7 +131,7 @@ class DDS:
 
     def calc_dd_table(self, hands):
         cards = encode_deal(hands)
-        table_deal = DDtable_deal(cards)
+        table_deal = DDTableDeal(cards)
         table = DDTableResults()
 
         code = self.libdds.CalcDDtable(table_deal, pointer(table))
