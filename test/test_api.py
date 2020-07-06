@@ -15,14 +15,14 @@ from src.api import app
 
 from test.utilities import string_to_hand
 from test.utilities import run_in_threads
-from test.utilities import check_DD_table_results
+from test.utilities import check_dd_table_results
+
 
 class TestAPI(unittest.TestCase):
     """
     Tests the server handler implementations.
     """
 
-    @classmethod
     def setUp(self):
         self.service = app.test_client()
 
@@ -36,20 +36,20 @@ class TestAPI(unittest.TestCase):
         """
 
         deal = dict(
-            hands = dict(
-                N = string_to_hand("KT.6.AKQ64.A7654"),
-                E = string_to_hand("Q53.KT9874.T2.Q2"),
-                S = string_to_hand("AJ876.A2.953.KJT"),
-                W = string_to_hand("942.QJ53.J87.983")
-                )
+            hands=dict(
+                N=string_to_hand("KT.6.AKQ64.A7654"),
+                E=string_to_hand("Q53.KT9874.T2.Q2"),
+                S=string_to_hand("AJ876.A2.953.KJT"),
+                W=string_to_hand("942.QJ53.J87.983")
             )
+        )
 
         result = dict(
-            S = dict(N = 13, E = 0, S = 13, W = 0),
-            H = dict(N = 8, E = 5, S = 8, W = 5),
-            D = dict(N = 13, E = 0, S = 13, W = 0),
-            C = dict(N = 13, E = 0, S = 13, W = 0),
-            N = dict(N = 13, E = 0, S = 13, W = 0)
+            S=dict(N=13, E=0, S=13, W=0),
+            H=dict(N=8, E=5, S=8, W=5),
+            D=dict(N=13, E=0, S=13, W=0),
+            C=dict(N=13, E=0, S=13, W=0),
+            N=dict(N=13, E=0, S=13, W=0)
         )
 
         def test_fn(self, deal):
@@ -60,7 +60,8 @@ class TestAPI(unittest.TestCase):
 
         solutions = run_in_threads(2, test_fn, args=(self, deal))
 
-        check_DD_table_results(self, solutions, result)
+        check_dd_table_results(self, solutions, result)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,9 +9,10 @@ CORS(app)
 api = Api(app)
 
 # When SetMaxThreads is called there must not be any other threads calling
-# libdds. The easiest way to avoid parallel calls is to keep only one DDS object
-# as long as server runs.
+# libdds. The easiest way to avoid parallel calls is to keep only one DDS
+# object as long as server runs.
 dds = DDS(max_threads=2)
+
 
 class DDSTable(Resource):
     def get(self):
@@ -25,17 +26,19 @@ class DDSTable(Resource):
         dds_table = dds.calc_dd_table(data['hands'])
         return dds_table
 
+
 class DDSScore(Resource):
     def post(self):
         """This should hook in to the dds_scores function listed below"""
         raise NotImplementedError()
 
-    def dds_scores(dds, state, target, solutions, mode=1):
+    def dds_scores(self, dds, state, target, solutions, mode=1):
         """Gives the dds score for the given contract, may be mid-hand"""
         n = len(state['plays']) % 4
         first = state['plays'][-n][0] if n > 0 else state['turn']
         trick = [c for _, c in state['plays'][-n:]] if n > 0 else []
-        return dds.solve_board(state['trump'], first, trick, state['hands'], target, solutions, mode)
+        return dds.solve_board(state['trump'], first, trick, state['hands'],
+                               target, solutions, mode)
 
 
 api.add_resource(DDSTable, '/api/dds-table/')
@@ -44,7 +47,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 
     # Here is an example command to use with curl
-    #curl --header "Content-Type: application/json"   --request POST   --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}'   http://localhost:5000/api/dds-table/
+    # curl --header "Content-Type: application/json"   --request POST   --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}'   http://localhost:5000/api/dds-table/
 
     # Example input format
     # state = {

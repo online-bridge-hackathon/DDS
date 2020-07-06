@@ -12,6 +12,7 @@ from threading import Thread
 
 SUIT_SYMBOLS = ["S", "H", "D", "C"]
 
+
 def string_to_hand(hand_string):
     # Input string example: "AQ85.AK976.5.J87"
 
@@ -31,10 +32,11 @@ def string_to_hand(hand_string):
 
     return hand
 
+
 def nesw_to_dds_format(nesw):
     # Input:
     # A list of four strings representing four bridge hands, in order North,
-    # East, South, and Eest, with the suits separated by periods, e.g.
+    # East, South, and West, with the suits separated by periods, e.g.
     # [
     #    "AQ85.AK976.5.J87",
     #    "JT.QJ5432.Q9.KQ9",
@@ -59,11 +61,13 @@ def nesw_to_dds_format(nesw):
         "W": string_to_hand(nesw[3])
     }
 
+
 def rotate_nesw_to_eswn(nesw):
     eswn = []
     for index in range(4):
-        eswn.append(nesw[(index + 1) %4])
+        eswn.append(nesw[(index + 1) % 4])
     return eswn
+
 
 def run_in_threads(num_threads, target, args):
     """
@@ -71,6 +75,7 @@ def run_in_threads(num_threads, target, args):
     """
     results = []
     threads = []
+
     # Wrapper to allow thread functions to return or yield their return values
     def thread_fn(target, args, result):
         for r in target(*args):
@@ -83,7 +88,6 @@ def run_in_threads(num_threads, target, args):
         threads.append(Thread(target=thread_fn, args=thread_arguments))
         threads[i].start()
 
-
     for t in threads:
         # Wait for thread exit
         t.join()
@@ -93,12 +97,21 @@ def run_in_threads(num_threads, target, args):
         for item in thread_return:
             yield item
 
-def check_DD_table_results(test, results, expected):
+
+def check_dd_table_results(test, results, expected):
     for result in results:
         for denomination in ['C', 'D', 'H', 'S', 'N']:
             for declarer in ['N', 'S', 'E', 'W']:
-                test.assertEqual(expected[denomination][declarer],
-                        result[denomination][declarer],
-                        declarer + ' should make ' + \
-                                str(expected[denomination][declarer]) + ' in ' + \
-                                denomination);
+                assertElementsEqual(test,
+                                    expected, result,
+                                    denomination, declarer)
+
+
+def assertElementsEqual(test, expected, result, denomination, declarer):
+    test.assertEqual(expected[denomination][declarer],
+                     result[denomination][declarer],
+                     declarer +
+                     ' should make ' +
+                     str(expected[denomination][declarer]) +
+                     ' in ' +
+                     denomination)
