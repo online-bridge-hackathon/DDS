@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A helm chart for DDS API
-name: dds-api
-version: 0.1.0
+name: dds
+version: 0.0.2
