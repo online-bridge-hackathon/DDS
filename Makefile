@@ -22,10 +22,22 @@ endif
 
 release: build push
 
-libdds/.git:
-	git submodule update --init
+# Make sure submodules have been initialized and libdds has latest code
+libdds/.git libdds-update:
+	git submodule update --init --rebase
 
-build: libdds/.git
+# Configure libdds build
+# Dependency makes sure submodules have been initialized
+${LIBDDS_BUILD_DIR}/CMakeCache.txt: libdds/.git
+	mkdir -p ${LIBDDS_BUILD_DIR}
+	cd ${LIBDDS_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+# Build libdds
+# Dependencies makes sure that configure has been run and code is the latest one
+libdds-build: ${LIBDDS_BUILD_DIR}/CMakeCache.txt libdds-update
+	+make -C ${LIBDDS_BUILD_DIR}
+
+build: libdds-update
 	docker build -t ${DOCKER_TAG} \
 		--build-arg CACHEBUST=$(shell git --git-dir=libdds/.git describe) \
 		.
@@ -49,5 +61,17 @@ set_gcp_context:
 ensure_ns:
 	kubectl create ns ${K8S_NS} || :
 
-run_local_tests:
+run_local_tests: libdds-build
 	python3 -m unittest discover ${VERBOSE_TEST}
+
+curl_local:
+	curl \
+	--header "Content-Type: application/json" \
+	--data \
+	'{"hands": { \
+		"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],    \
+		"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK", "H8"],    \
+		"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],    \
+		"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"] }}' \
+	http://localhost:5000/api/dds-table/
+

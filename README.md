@@ -8,14 +8,16 @@ Uses Bo Hagland's solver https://github.com/dds-bridge/dds -- requires the libdd
 Credit to Alexis Rimbaud of NukkAI for the python dds wrapper.
 
 
-# Build and install libdds.so under MacOS #
+# Build and install libdds library for local testing
 
 ```
-git clone https://github.com/dds-bridge/dds.git
-cd dds/src
-make -f Makefiles/Makefile_Mac_clang_shared THREADING=
-ln libdds.so /usr/local/lib
+make libdds-build
+cd libdds/.build
 ```
+
+The python loader looks for the library from libdds/.build/src. If the file is
+found from build directory then the found library is preferred before a library
+in a system directory.
 
 # Install a local server using Flask, then test it manually:
 
@@ -23,8 +25,8 @@ ln libdds.so /usr/local/lib
 pip3 install Flask
 pip install flask-restful
 pip install flask_cors
-cd src
-python api.py
+cd DDS
+python3 -m src.api
 # In a separate terminal window…
 curl --header "Content-Type: application/json"   --request POST   --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}'   http://localhost:5000/api/dds-table/
 ```
