@@ -38,6 +38,7 @@ class TestDDS(unittest.TestCase):
 
     def test_one_sample_deal(self):
         """
+        Solve a sample.
             S AQ85
             H AK976
             D 5
@@ -70,6 +71,7 @@ class TestDDS(unittest.TestCase):
 
     def test_ns_make_7_of_everything(self):
         """
+        NS make 13 tricks in everything.
             S AKQJ
             H AKQJ
             D T98
@@ -120,10 +122,10 @@ class TestDDS(unittest.TestCase):
             for declarer in ['E', 'W']:
                 self.assertEqual(13, dds_table[denomination][declarer],
                                  "EW can take 13 tricks in any denomination.")
-        
+
     def test_everyone_makes_3n(self):
         """
-        Unusual deal!
+        Everyone makes 9 tricks in notrump!
         See: https://bridge.thomasoandrews.com/deals/everybody/
 
             S QT9
@@ -194,7 +196,8 @@ class TestDDS(unittest.TestCase):
 
     def test_parallel_CalcDDTable(self):
         """
-        Tests parallel access to calcDDTable. Cards are from libdds/hands/list100.txt
+        Tests parallel access to dds.calc_dd_table.
+        Cards are from libdds/hands/list100.txt
 
         PBN 0 0 4 2 "N:T742.QT6.AJ7.Q64 AQ83.A54.KQ9.T82 K65.J873.653.A97 J9.K92.T842.KJ53"
         FUT 10 3 2 2 1 1 1 3 3 0 0 14 3 6 3 8 11 7 9 6 13 0 0 32 0 128 0 0 0 32 0 5 5 5 5 5 5 5 5 4 4

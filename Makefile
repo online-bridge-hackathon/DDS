@@ -4,9 +4,9 @@ GKE_ZONE ?= europe-west4-b
 
 # Service / App
 GKE_CLUSTER_NAME ?= prod-cluster
-K8S_NS ?= prod-dds
-EXTERNAL_ADDRESS ?= dds.prod.globalbridge.app
 RELEASE_NAME ?= dds
+K8S_NS ?= prod-${RELEASE_NAME}
+EXTERNAL_ADDRESS ?= ${RELEASE_NAME}.prod.globalbridge.app
 
 # Docker Config
 DOCKER_REPO ?= gcr.io/${GCP_PROJECT}
@@ -19,7 +19,6 @@ ifeq (${SILENT},1)
 else
 	VERBOSE_TEST := -v
 endif
-
 
 release: build push
 
