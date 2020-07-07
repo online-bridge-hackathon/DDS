@@ -217,8 +217,8 @@ function sendJSON() {
     
     // For testing backend changes locally
     // const URL = "http://localhost:5000/api/dds-table/";
-    
-    const URL = "https://dds.globalbridge.app/api/dds-table/";
+
+    const URL = "https://dds.prod.globalbridge.app/api/dds-table/";
 
     xhr.open("POST", URL, true);
 

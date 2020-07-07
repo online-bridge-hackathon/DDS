@@ -62,7 +62,13 @@ ensure_ns:
 run_local_tests: libdds-build
 	python3 -m unittest discover ${VERBOSE_TEST}
 
-curl_local:
+curl_local_URL := http://localhost:5000/api/dds-table/
+curl_prod_URL  := https://dds.prod.globalbridge.app/api/dds-table/
+CURL_URL       ?= ${$@_URL}
+
+# Slightly unusual approach in order to keep the command-line output legible.
+# May need to add "--insecure" when we add more targets.
+curl_local curl_prod:
 	curl \
 	--header "Content-Type: application/json" \
 	--data \
@@ -71,5 +77,4 @@ curl_local:
 		"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK", "H8"],    \
 		"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],    \
 		"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"] }}' \
-	http://localhost:5000/api/dds-table/
-
+	${CURL_URL}
