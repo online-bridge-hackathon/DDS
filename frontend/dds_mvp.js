@@ -29,6 +29,8 @@
 const DIRECTIONS = ["north", "east", "south", "west"];
 const SUITS = ["spades", "hearts", "diamonds", "clubs"];
 const PIPS = "AKQJT98765432";
+const DENOMINATIONS = ["C", "D", "H", "S", "N"];
+const DIRECTION_LETTERS = ["N", "E", "S", "W"];
 
 // TODO: Clean up our HTML rendering, perhaps using customer elements.
 //       See https://developers.google.com/web/fundamentals/web-components/customelements
@@ -40,6 +42,8 @@ const SUIT_SYMBOLS = {
 };
 
 function fillFormWithTestData(nesw) {
+    clear_results();
+
     var holdings = [];
 
     for (const hand of nesw) {
@@ -101,12 +105,16 @@ function * hand_elements() {
 }
 
 function clearTestData() {
+    clear_results();
+
     for (const element of hand_elements()) {
         element.value = "";
     }
 }
 
 function rotateClockwise() {
+    clear_results();
+
     var hands = [];
 
     for (const element of hand_elements()) {
@@ -203,13 +211,31 @@ function pageLoad() {
     document.getElementById("valid-pips").innerHTML = PIPS;
 }
 
+function clear_results() {
+    var result = document.getElementById("result");
+    var result_table = document.getElementById("result-table");
+
+    result.innerHTML = "";
+
+    for (var row = 1; row <= 4; row++) {
+        for (var column = 1; column <= 5; column++) {
+            var cell = result_table.rows[row].cells[column];
+            cell.innerHTML = "";
+        }
+    }
+}
+
 function sendJSON() {
+    const result = document.getElementById("result");
+    const result_table = document.getElementById("result-table");
+
     var hands = collectHands();
 
     const error_message = inputIsValid(hands);
 
     if (error_message.length) {
-        document.getElementById("result").innerHTML = error_message;
+        clear_results();
+        result.innerHTML = error_message;
         return;
     }
     
@@ -226,12 +252,24 @@ function sendJSON() {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            document.getElementById("result").innerHTML = this.responseText;
+            const dd_table = JSON.parse(this.responseText);
+
+            for (var row = 1; row <= 4; row++) {
+                for (var column = 1; column <= 5; column++) {
+                    const cell = result_table.rows[row].cells[column];
+                    const denomination = DENOMINATIONS[column - 1];
+                    const direction = DIRECTION_LETTERS[row - 1];
+                    const tricks = dd_table[denomination][direction];
+                    cell.innerHTML = tricks;
+                }
+            }
         }
     };
 
-    document.getElementById("result").innerHTML = "";
+    clear_results();
+
     var deal = { "hands": hands };
     var data = JSON.stringify(deal);
+
     xhr.send(data);
 }
