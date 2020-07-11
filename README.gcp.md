@@ -33,7 +33,7 @@ python3 -m src.api
 Open a new terminal tab by pressing the "+" button in the cloud shell menu bar.
 
 ```
-curl --header "Content-Type: application/json" --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}'   http://localhost:5000/api/dds-table/
+make curl_local
 ```
 
 # Create a docker image and deploy it to the GCP
@@ -80,7 +80,7 @@ Now view the logs:
 Now send your service a POST request, either from the cloud shell or your local machine:
 
 ```
-curl --header "Content-Type: application/json" --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}'   https://dds.hackathon.globalbridge.app/api/dds-table/ 
+make curl_prod
 ```
 
 When you refresh the logs page you should see a line showing your POST.
