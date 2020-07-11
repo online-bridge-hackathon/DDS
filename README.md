@@ -34,6 +34,11 @@ python3 -m src.api
 make curl_local
 ```
 
+### Configuration ###
+
+The server supports configuration using `server.yaml` file. Configuration file is
+loaded from the current working directory. The repository includes `example_server.yaml`.
+
 ## Install Docker for MacOS
 
 https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3
