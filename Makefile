@@ -22,7 +22,7 @@ release: build push
 
 # Make sure submodules have been initialized and libdds has latest code
 libdds/.git libdds-update:
-	git submodule update --init --rebase
+	git submodule update --init --recursive
 
 # Configure libdds build
 # Dependency makes sure submodules have been initialized
