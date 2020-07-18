@@ -78,3 +78,16 @@ curl_local curl_prod:
 		"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],    \
 		"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"] }}' \
 	${CURL_URL}
+
+logfile := logs/src.api.$(shell date +%FT%T).log
+pidfile := logs/server.PID
+
+start_local_server: libdds-build stop_local_server
+	@echo
+	@echo Starting a local test service as a background process. You can stop it with \`make stop_local_service\`
+	@echo The server log will be written to \'${logfile}\'.
+	@echo
+	python3 -m src.api > ${logfile} 2>&1 & echo $$! > ${pidfile}
+
+stop_local_server:
+	[ ! -e ${pidfile} ] || (kill $$(cat ${pidfile}) ; rm ${pidfile})
