@@ -18,6 +18,16 @@ GKE_ZONE ?= europe-west3-b
 
 LIBDDS_BUILD_DIR := libdds/.build
 
+LOGDIR := logs
+
+# TODO: Add LIBDDS_BUILD_DIR
+TMPDIRS := \
+	${LOGDIR} \
+# end of TMPDIRS
+
+${TMPDIRS}:
+	mkdir -p $@
+
 release: build push
 
 # Make sure submodules have been initialized and libdds has latest code
@@ -74,12 +84,12 @@ curl_local curl_prod:
 	--data "@./data/sample_deal.json" \
 	${CURL_URL}
 
-logfile := logs/src.api.$(shell date +%FT%T).log
-pidfile := logs/server.PID
+logfile := ${LOGDIR}/src.api.$(shell date +%FT%T).log
+pidfile := ${LOGDIR}/server.PID
 
-start_local_server: libdds-build stop_local_server
+start_local_server: libdds-build stop_local_server ${LOGDIR}
 	@echo
-	@echo Starting a local test service as a background process. You can stop it with \`make stop_local_service\`
+	@echo Starting a local test service as a background process. You can stop it with \`make stop_local_server\`
 	@echo The server log will be written to \'${logfile}\'.
 	@echo
 	python3 -m src.api > ${logfile} 2>&1 & echo $$! > ${pidfile}
