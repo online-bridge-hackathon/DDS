@@ -8,6 +8,8 @@
 # cd DDS
 # python3 -m unittest discover
 
+import json
+import os
 import unittest
 
 from test.utilities import nesw_to_dds_format
@@ -54,16 +56,10 @@ class TestDDS(unittest.TestCase):
             C A6432
         """
 
-        nesw = [
-            "AQ85.AK976.5.J87",
-            "JT.QJ5432.Q9.KQ9",
-            "972..JT863.A6432",
-            "K643.T8.AK742.T5"
-        ]
+        with open(os.path.join('data', 'sample_deal.json')) as file:
+            deal = json.load(file)
 
-        hands = nesw_to_dds_format(nesw)
-
-        dds_table = self.dds.calc_dd_table(hands)
+        dds_table = self.dds.calc_dd_table(deal["hands"])
 
         self.assertEqual(8, dds_table['C']['S'],
                          'South can take 8 tricks with clubs as trump')
