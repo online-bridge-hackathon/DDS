@@ -4,5 +4,6 @@ __pycache__/
 .DS_Store
 src/dump.txt
 .idea/
+logs/
 venv/
 server.yaml
