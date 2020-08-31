@@ -6,12 +6,46 @@
 # For more information, run:
 #   $ gcloud topic gcloudignore
 #
+
+!include:.gitignore
+
 .gcloudignore
-# If you would like to upload your .git directory, .gitignore file or files
-# from your .gitignore file, remove the corresponding line
-# below:
 .git
 .gitignore
 
-node_modules
-#!include:.gitignore
+# Convoluted way to include only libdds.so.2 from libdds/.
+# Required because .gcloudignore processing has the same performance-inspired
+# limitation as .gitignore.
+libdds/*
+!libdds/.build/
+
+libdds/.build/*
+!libdds/.build/src
+
+libdds/.build/src/*
+!libdds/.build/src/libdds.so.2
+
+# Don't know why, but this appears to be necessary even though
+# .gitignore contains a __pycache__ pattern.
+src/__pycache__/**
+
+# Directories in our root directory:
+
+chart/**
+data/**
+frontend/**
+test/**
+
+# Files in our root directory:
+
+*.md
+
+.gitmodules
+.dockerignore
+.all-contributorsrc
+_config.yml
+Dockerfile
+LICENSE
+Makefile
+example_server.yaml
+server.yaml

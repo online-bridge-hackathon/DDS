@@ -1,0 +1,87 @@
+EXTERNAL_ADDRES ?= dds.hackathon.globalbridge.app
+
+ifeq (${SILENT},1)
+	VERBOSE_TEST :=
+else
+	VERBOSE_TEST := -v
+endif
+
+GCP_REGION			?= us-central1
+
+DEV_GCP_PROJECT		?= online-bridge-hackathon-2020
+PROD_GCP_PROJECT	?= globalbridge-app
+
+ENDPOINT			?= dds
+
+LIBDDS_BUILD_DIR := libdds/.build
+
+LOGDIR := logs
+
+# TODO: Add LIBDDS_BUILD_DIR
+TMPDIRS := \
+	${LOGDIR} \
+# end of TMPDIRS
+
+${TMPDIRS}:
+	mkdir -p $@
+
+# Make sure submodules have been initialized and libdds has latest code
+libdds/.git libdds-update:
+	git submodule update --init --recursive
+
+# Configure libdds build
+# Dependency makes sure submodules have been initialized
+${LIBDDS_BUILD_DIR}/CMakeCache.txt: libdds/.git
+	mkdir -p ${LIBDDS_BUILD_DIR}
+	cd ${LIBDDS_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+# Build libdds
+# Dependencies makes sure that configure has been run and code is the latest one
+libdds-build: ${LIBDDS_BUILD_DIR}/CMakeCache.txt libdds-update
+	+make -C ${LIBDDS_BUILD_DIR}
+
+# Deploys must be run from the Google Cloud Shell or a compatible
+# Linux x86 environment, so that libdds.so is uploaded.
+
+# undeploy required due to an apparent bug in 'gcloud functions deploy'
+deploy_dev:	libdds-build undeploy_dev
+	gcloud functions deploy ${ENDPOINT} --entry-point=dds --memory=2048MB --runtime python37 --trigger-http --allow-unauthenticated --project=${DEV_GCP_PROJECT}
+
+# undeploy required due to an apparent bug in 'gcloud functions deploy'
+deploy_prod: libdds-build undeploy_prod
+	gcloud functions deploy ${ENDPOINT} --entry-point=dds --memory=2048MB --runtime python37 --trigger-http --allow-unauthenticated --project=${PROD_GCP_PROJECT}
+
+undeploy_dev:
+	gcloud functions delete ${ENDPOINT} --project=${DEV_GCP_PROJECT} --quiet || true
+
+undeploy_prod:
+	gcloud functions delete ${ENDPOINT} --project=${PROD_GCP_PROJECT} --quiet || true
+
+run_local_tests: libdds-build
+	python3 -m unittest discover ${VERBOSE_TEST}
+
+curl_local_URL	:= http://localhost:8080
+curl_dev_URL	:= https://${GCP_REGION}-${DEV_GCP_PROJECT}.cloudfunctions.net/${ENDPOINT}
+curl_prod_URL	:= https://${GCP_REGION}-${PROD_GCP_PROJECT}.cloudfunctions.net/${ENDPOINT}
+CURL_URL		?= ${$@_URL}
+
+DEAL_NAME		:= sample_deal
+
+curl_local curl_aw curl_dev curl_prod:
+	curl \
+	--header "Content-Type: application/json" \
+	--data "@./data/${DEAL_NAME}.json" \
+	${CURL_URL}
+
+logfile := ${LOGDIR}/ff_server.$(shell date +%FT%T).log
+pidfile := ${LOGDIR}/ff_server.PID
+
+start_local_server: libdds-build stop_local_server ${LOGDIR}
+	@echo
+	@echo Starting a local test service as a background process. You can stop it with \`make stop_local_server\`
+	@echo The server log will be written to \'${logfile}\'.
+	@echo
+	functions-framework --target=dds > ${logfile} 2>&1 & echo $$! > ${pidfile}
+
+stop_local_server:
+	[ ! -e ${pidfile} ] || (kill $$(cat ${pidfile}) ; rm ${pidfile})

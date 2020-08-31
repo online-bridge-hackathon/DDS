@@ -241,10 +241,23 @@ function sendJSON() {
     
     var xhr = new XMLHttpRequest();
     
-    // For testing backend changes locally
+    // Local legacy server
     // const URL = "http://localhost:5000/api/dds-table/";
 
-    const URL = "https://dds.prod.globalbridge.app/api/dds-table/";
+    // Legacy dev - a Kubernetes cluster
+    // const URL = "https://dds.prod.online-bridge-hackathon-2020/api/dds-table/";
+
+    // Legacy production - a Kubernetes cluster
+    // const URL = "https://dds.prod.globalbridge.app/api/dds-table/";
+
+    // Local functions-framework server 
+    // const URL = "http://localhost:8080";
+
+    // Google Cloud Function endpoint for our development server
+    // const URL = "https://us-central1-online-bridge-hackathon-2020.cloudfunctions.net/dds";
+
+    // Google Cloud Function endpoint for our production server
+    const URL = "https://us-central1-globalbridge-app.cloudfunctions.net/dds";
 
     xhr.open("POST", URL, true);
 
