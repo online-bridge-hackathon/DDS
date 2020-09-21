@@ -1,0 +1,51 @@
+# This file specifies files that are *not* uploaded to Google Cloud Platform
+# using gcloud. It follows the same syntax as .gitignore, with the addition of
+# "#!include" directives (which insert the entries of the given .gitignore-style
+# file at that point).
+#
+# For more information, run:
+#   $ gcloud topic gcloudignore
+#
+
+!include:.gitignore
+
+.gcloudignore
+.git
+.gitignore
+
+# Convoluted way to include only libdds.so.2 from libdds/.
+# Required because .gcloudignore processing has the same performance-inspired
+# limitation as .gitignore.
+libdds/*
+!libdds/.build/
+
+libdds/.build/*
+!libdds/.build/src
+
+libdds/.build/src/*
+!libdds/.build/src/libdds.so.2
+
+# Don't know why, but this appears to be necessary even though
+# .gitignore contains a __pycache__ pattern.
+src/__pycache__/**
+
+# Directories in our root directory:
+
+chart/**
+data/**
+frontend/**
+test/**
+
+# Files in our root directory:
+
+*.md
+
+.gitmodules
+.dockerignore
+.all-contributorsrc
+_config.yml
+Dockerfile
+LICENSE
+Makefile
+example_server.yaml
+server.yaml
