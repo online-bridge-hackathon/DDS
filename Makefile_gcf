@@ -72,7 +72,7 @@ CURL_URL		?= ${$@_URL}
 
 DEAL_NAME		:= sample_deal
 
-curl_local curl_aw curl_dev curl_prod:
+curl_local curl_dev curl_prod:
 	curl \
 	--header "Content-Type: application/json" \
 	--data "@./data/${DEAL_NAME}.json" \
