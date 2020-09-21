@@ -1,3 +1,8 @@
+#   Copyright 2020 Adam Wildavsky and the Bridge Hackathon contributors.
+#   Use of this source code is governed by an MIT-style
+#   license that can be found in the LICENSE file or at
+#   https://opensource.org/licenses/MIT
+
 EXTERNAL_ADDRES ?= dds.hackathon.globalbridge.app
 
 ifeq (${SILENT},1)
@@ -43,11 +48,11 @@ libdds-build: ${LIBDDS_BUILD_DIR}/CMakeCache.txt libdds-update
 # Deploys must be run from the Google Cloud Shell or a compatible
 # Linux x86 environment, so that libdds.so is uploaded.
 
-# undeploy required due to an apparent bug in 'gcloud functions deploy'
+# undeploy required as of 2020_09 due to an apparent bug in 'gcloud functions deploy'
 deploy_dev:	libdds-build undeploy_dev
 	gcloud functions deploy ${ENDPOINT} --entry-point=dds --memory=2048MB --runtime python37 --trigger-http --allow-unauthenticated --project=${DEV_GCP_PROJECT}
 
-# undeploy required due to an apparent bug in 'gcloud functions deploy'
+# undeploy required as of 2020_09 due to an apparent bug in 'gcloud functions deploy'
 deploy_prod: libdds-build undeploy_prod
 	gcloud functions deploy ${ENDPOINT} --entry-point=dds --memory=2048MB --runtime python37 --trigger-http --allow-unauthenticated --project=${PROD_GCP_PROJECT}
 
