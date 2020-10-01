@@ -4,6 +4,11 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 An api that returns double-dummy results for a given deal.
 
+## deploy on AWS as a Lambda
+[deploy-aws](deploy-aws/README.md)
+
+## deploy on GCP as a KS8 Container
+
 ## Usage
 ```
 curl --header "Content-Type: application/json" --request POST --data '{"hands":{"S":["D3", "C6", "DT", "D8", "DJ", "D6", "CA", "C3", "S2", "C2", "C4", "S9", "S7"],"W":["DA", "S4", "HT", "C5", "D4", "D7", "S6", "S3", "DK", "CT", "D2", "SK","H8"],"N":["C7", "H6", "H7", "H9", "CJ", "SA", "S8", "SQ", "D5", "S5", "HK", "C8", "HA"],"E":["H2", "H5", "CQ", "D9", "H4", "ST", "HQ", "SJ", "HJ", "DQ", "H3", "C9", "CK"]}}' https://dds.prod.globalbridge.app/api/dds-table/
